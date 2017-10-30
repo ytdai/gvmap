@@ -1,0 +1,11 @@
+SampleName	Age	Gender	Fusion	other_fusion	KRAS	P53	NRAS
+M1001	Child	Female	0	ETV6-PMEL	Missense	Frameshift	Missense/Frameshift
+M1002	Child	Male	0	ETV6-BORCS5	Nonsense	0	0
+M1003	Child	Female	0	ETV6-NID1	Missense	0	0
+M1004	Adult	Female	0	ERG-FUS	0	0	0
+M1005	Child	Female	0	RUNX1-UGGT2	0	Frameshift	0
+M4001	Child	Female	ETV6-RUNX1	0	Frameshift	0	Missense/Frameshift/Missense
+M4002	Child	Female	ETV6-RUNX1	0	0	Missense	0
+M4003	0	Female	0	ZZZ3-AK5	Missense	0	0
+M4004	Child	Male	ETV6-RUNX1	0	Missense	0	0
+M4005	Child	Male	ETV6-RUNX1	0	0	0	Frameshift
