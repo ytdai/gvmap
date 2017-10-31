@@ -1,11 +1,20 @@
 Package: gvmap
 Type: Package
-Title: What the Package Does (Title Case)
+Title: An Improved Function to Plot Heatmap of Genomic Data
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
+Authors@R: person("Yuting", "Dai", email = "forlynna@sjtu.edu.cn", role = c("aut", "cre"))
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Depends:
+    R (>= 3.3.0)
+URL: https://github.com/ytdai/gvmap
+BugReports: https://github.com/ytdai/gvmap/issues
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.0.1
+Imports:
+    rsvg (>= 1.2),
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr

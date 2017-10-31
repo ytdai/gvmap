@@ -1,5 +1,5 @@
 
-
+exp_mat <- read.csv("inst/extdata/symbol.raw_data.csv", header = T)
 
 exp_mat <- read.table("inst/extdata/count.txt", header = T)
 row.names(exp_mat) <- exp_mat[, 1]
@@ -111,8 +111,8 @@ library(matrixStats)
 a <- rowVars(as.matrix(exp_data[, 2:11]))
 
 exp_data <- exp_data[ order(a), ]
-exp_gene <- head(exp_data, 100)
+exp_gene <- head(exp_data, 50)
 
-write.table(exp_gene, file = "inst/extdata/count.txt", sep = "\t", col.names = T, row.names = F, quote = F)
+write.table(exp_gene, file = "inst/extdata/count.1.txt", sep = "\t", col.names = T, row.names = F, quote = F)
 #############################
 

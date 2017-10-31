@@ -60,16 +60,16 @@ heatmapZdata <- function(heatmap_data) {
 #' heatmap SVG
 #' heatmap plot content SVG element
 #'
-heatmapSVG <- function(z_data, config_data, plot_config, id) {
+heatmapSVG <- function(heatmap_data, config_data, plot_config, id) {
   # change value to color
-  nr <- dim(z_data)[1]
-  nc <- dim(z_data)[2]
+  nr <- dim(heatmap_data)[1]
+  nc <- dim(heatmap_data)[2]
 
   color_theme <- config_data$color_config[[match(config_data$map_config$heatmap_1$color_theme, names(config_data$color_config))]]
   color_list <- colorRampPalette(color_theme)(256)
 
-  tag_val <- max(abs(min(z_data)), max(z_data))
-  z_data <- round(z_data / tag_val * 128) + 128
+  tag_val <- max(abs(min(heatmap_data)), max(heatmap_data))
+  heatmap_data <- round(heatmap_data / tag_val * 128) + 128
 
   heatmap_svg_ele <- lapply(1:nr, function(m) {
     heatmap_svg_gene <- lapply(1:nc, function(n) {
@@ -77,13 +77,13 @@ heatmapSVG <- function(z_data, config_data, plot_config, id) {
                y = plot_config$heatmap_row_rect*(m-1),
                width = plot_config$heatmap_col_rect,
                height = plot_config$heatmap_row_rect,
-               fill = color_list[z_data[m, n]],
+               fill = color_list[heatmap_data[m, n]],
                stroke = "none")
     })
     exp_svg <- unlist(heatmap_svg_gene)
     text_svg <- get.text.svg(x = plot_config$plot_width*0.71,
                              y = plot_config$heatmap_row_rect*m,
-                             text.content = rownames(z_data)[m],
+                             text.content = rownames(heatmap_data)[m],
                              font.size = plot_config$heatmap_row_fz)
     return(paste(exp_svg, text_svg, sep = "\n"))
   })

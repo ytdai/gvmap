@@ -1,7 +1,9 @@
 #'
 #' dendAttribute
+#' This function is to transfer the dendrogram object info into coordinate
+#' @param dend a dendrogram object
+#' @return x position, y position, and the father node
 #'
-
 dendAttribute <- function(dend) {
   node_h <- dend %>% get_nodes_attr("height")
   node_mb <- dend %>% get_nodes_attr("members")

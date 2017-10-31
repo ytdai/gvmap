@@ -1,5 +1,5 @@
 #'
-#'
+#' Conver legend sample information into svg elements
 #'
 legendSampleSVG <- function(legend_data, plot_config, id) {
   sample_name <- rownames(legend_data)

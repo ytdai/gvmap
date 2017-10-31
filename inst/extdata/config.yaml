@@ -1,8 +1,20 @@
 map_config:
-  heatmap_num: 1
+  heatmap_num: 2
   legmap_num: 2
   heatmap_1:
-    color_theme: "gradient_col"
+    origin_data: FALSE
+    kmer: 2
+    color_kmer: FALSE
+    precent: 0.6
+    color_theme: "gradient_col_gr"
+    split_row: NULL
+  heatmap_2:
+    origin_data: FALSE
+    kmer: 3
+    color_kmer: FALSE
+    precent: 0.4
+    color_theme: "gradient_col_yp"
+    split_row: NULL
   legmap_1:
     - ["Age", "binary_col", 2]
     - ["Gender","binary_col", 3]
@@ -15,6 +27,7 @@ map_config:
   map_order:
     - "heatmap_1"
     - "legmap_1"
+    - "heatmap_2"
     - "legmap_2"
   split_sample: 
     - "M1003"
@@ -36,7 +49,11 @@ color_config:
     tow_hit: "#499E49"
     three_hit: "#237023"
   pool_col: ["#1B9E77", "#D95F02", "#7570B3", "#E7298A", "#66A61E", "#E6AB02", "#A6761D", "#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6", "#6A3D9A"]
-  gradient_col: ["blue", "white", "red"]
+  gradient_col_gr: ["green", "black", "red"]
+  gradient_col_yp: ["yellow", "white", "purple"]
+  gv_line_col: "#FDBF6F"
+  gv_bar_col: "#E6AB02"
+  gv_dot_col: "#000000"
 
 
 

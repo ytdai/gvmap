@@ -1,12 +1,41 @@
 #'
 #' gvmap package
 #'
-#' @param legend_data a data frame. The legend data of the plot
+#' @param legend_data a data frame. The basic legend data of the plot
+#' @param heatmap_data a numberic matrix
+#' @param config_file a configuration file
+#'
+#' @param Rowv determines if and how the row dendrogram should be reordered.	By default,
+#' it is TRUE, which implies dendrogram is computed and reordered based on row means.
+#' If NULL or FALSE, then no dendrogram is computed and no reordering is done. If a
+#' dendrogram, then it is used "as-is", ie without any reordering. If a vector of
+#' integers, then dendrogram is computed and reordered based on the order of the vector.
+#' @param Colv determines if and how the column dendrogram should be reordered.	Has the options
+#' as the Rowv argument above and additionally when x is a square matrix, Colv = "Rowv" means
+#' that columns should be treated identically to the rows.
+#' @param distfun function used to compute the distance (dissimilarity) between both rows
+#' and columns. Defaults to dist.
+#' @param hclustfun function used to compute the hierarchical clustering when Rowv or
+#' Colv are not dendrograms. Defaults to hclust.
+#' @param dendrogram character string indicating whether to draw 'none', 'row', 'column' or
+#' 'both' dendrograms. Defaults to 'both'. However, if Rowv (or Colv) is FALSE or NULL
+#' and dendrogram is 'both', then a warning is issued and Rowv (or Colv) arguments are honoured.
+#' @param reorderfun function(d, w) of dendrogram and weights for reordering the row and
+#' column dendrograms. The default uses stats{reorder.dendrogram}
+#' @param symm logical indicating if x should be treated symmetrically; can only be true
+#' when x is a square matrix.
+#' @param revC logical indicating if the column order should be reversed for plotting.
+#' Default (when missing) - is FALSE, unless symm is TRUE.
+#' This is useful for cor matrix.
+#'
+#' @seealso
+#' \link{heatmap}, \link[gplots]{heatmap.2}
 #'
 #' @examples
 #' legend_data <- "inst/extdata/gvmap.test.txt"
 #' config_file <- "inst/extdata/config.yaml"
-#' heatmap_data <- "inst/extdata/count.txt"
+#' heatmap_data_1 <- "inst/extdata/count.txt"
+#' heatmap_data_2 <- "inst/extdata/count.1.txt"
 #' output_svg_name <- "tests/out.svg"
 #'
 gvmap <- function(legend_data,
@@ -16,6 +45,7 @@ gvmap <- function(legend_data,
                   # output svg name
                   output_svg_name,
                   convert_pdf = TRUE,
+                  convert_pdf = FALSE,
 
                   # plot for heatmap data
                   Rowv = TRUE,
