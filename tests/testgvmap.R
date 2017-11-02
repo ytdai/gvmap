@@ -8,7 +8,14 @@ head(exp_mat)
 
 x <- exp_mat
 
-# heatmap.2(as.matrix(exp_mat))
+heatmap.2(as.matrix(symbol_data),
+          col = color.out,
+          hclust=function(x) hclust(x,method = 'ward.D2'),
+          distfun=function(x) as.dist((1-cor(t(x)))/2),
+          scale = "row", dendrogram = 'both',
+          key = TRUE, symkey = FALSE, density.info = "none",
+          trace = "none", cexRow = 0.5,
+          ColSideColors = as.character(color_slide$color_cell))
 
 
 heatmap.2(heatmap_data,
@@ -16,6 +23,25 @@ heatmap.2(heatmap_data,
           scale = "row", dendrogram = 'both',
           key = TRUE, symkey = FALSE, density.info = "none",
           trace = "none", cexRow = 0.5)
+
+heatmap.2(heatmap_sub_data, scale = "col",
+          col = colorRampPalette(c("green", "black", "red"))(400),
+          dendrogram = 'both', density.info = "none",
+          trace = "none", cexRow = 0.5)
+
+
+plot_width = 1200
+plot_height = 1600
+stroke_width = 0.5
+dend_stroke_width = 2
+group_span = 10
+sample_span = 0
+heatmap_row_span = 0
+frame = TRUE
+frame_stroke_width = 2
+sample_font_size = NULL
+legend_font_size = NULL
+font_family = "Arial"
 
 #
 library(gplots)

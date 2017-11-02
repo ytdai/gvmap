@@ -55,3 +55,12 @@ dendAttribute <- function(dend) {
 #'
 is.dendrogram <- function (x) { inherits(x, "dendrogram")  }
 
+#'
+#' reorderfun
+#'
+reorderfun <- function(d, w) reorder(d, w)
+
+
+
+
+

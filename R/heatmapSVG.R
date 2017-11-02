@@ -38,9 +38,9 @@ dendSVG <- function(dend,
 }
 
 #'
-#' calculate z data
+#' calculate row z data
 #'
-heatmapZdata <- function(heatmap_data) {
+heatmapRowZdata <- function(heatmap_data) {
   nr <- dim(heatmap_data)[1]
   nc <- dim(heatmap_data)[2]
 
@@ -48,6 +48,25 @@ heatmapZdata <- function(heatmap_data) {
   row_sd_val <- rowSds(heatmap_data)
 
   z_data <- lapply(1:nr, function(x) (heatmap_data[x, ] - row_mean_val[x])/row_sd_val[x])
+  z_data <- t(matrix(unlist(z_data), nrow = nc, ncol = nr))
+
+  colnames(z_data) <- colnames(heatmap_data)
+  rownames(z_data) <- rownames(heatmap_data)
+
+  return(z_data)
+}
+
+#'
+#' calculate col z data
+#'
+heatmapColZdata <- function(heatmap_data) {
+  nr <- dim(heatmap_data)[1]
+  nc <- dim(heatmap_data)[2]
+
+  col_mean_val <- colMeans(heatmap_data)
+  col_sd_val <- colSds(heatmap_data)
+
+  z_data <- lapply(1:nr, function(x) (heatmap_data[, x] - col_mean_val[x])/col_sd_val[x])
   z_data <- t(matrix(unlist(z_data), nrow = nc, ncol = nr))
 
   colnames(z_data) <- colnames(heatmap_data)

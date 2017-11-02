@@ -34,8 +34,14 @@
 #' @examples
 #' legend_data <- "inst/extdata/gvmap.test.txt"
 #' config_file <- "inst/extdata/config.yaml"
-#' heatmap_data_1 <- "inst/extdata/count.txt"
-#' heatmap_data_2 <- "inst/extdata/count.1.txt"
+#'
+#' heatmap_data_file_1 <- "inst/extdata/count.txt"
+#' heatmap_data_file_2 <- "inst/extdata/count.1.txt"
+#' heatmap_data <- list(heatmap_1 = heatmap_data_file_1,
+#'                      heatmap_2 = heatmap_data_file_2)
+#'
+#' heatmap_data <- readHeatmapFile(heatmap_data)
+#'
 #' output_svg_name <- "tests/out.svg"
 #'
 gvmap <- function(legend_data,
@@ -45,49 +51,42 @@ gvmap <- function(legend_data,
                   # output svg name
                   output_svg_name,
                   convert_pdf = TRUE,
-                  convert_pdf = FALSE,
-
-                  # plot for heatmap data
-                  Rowv = TRUE,
-                  Colv = if (symm) "Rowv" else TRUE,
-                  distfun = dist,
-                  hclustfun = hclust,
-                  dendrogram = c("both", "row", "column", "none"),
-                  reorderfun = function(d, w) reorder(d, w),
-
-                  symm = FALSE,
-                  revC,
-
-                  ## data scaling
-                  na.rm = TRUE,
+                  convert_png = FALSE,
 
                   # plot for canvas data
                   plot_width = 1200,
                   plot_height = 1600,
                   stroke_width = 0.5,
-                  group_span = NULL,
-                  sample_span = NULL,
+                  dend_stroke_width = 2,
+                  group_span = 10,
+                  sample_span = 0,
+                  heatmap_row_span = 0,
                   frame = TRUE,
+                  frame_stroke_width = 2,
                   sample_font_size = NULL,
                   legend_font_size = NULL,
                   font_family = "Arial") {
 
+  ## =======================
+  ## Input data
+  ## =======================
+
   # read config file and generate config parmeters
   if (missing(config_file)) {
-    stop("[ERROR] Config file is required")
+    stop("[ERROR] Config file is required!")
   }
   config_data <- gvmapConfig(config_file)
 
   # read legend data
   if (missing(legend_data)) {
     message("[WARNING] Legend data is missing")
-    if (config_data$map_config$legmap_num > 0) {
-      message("[WARNING] The legmap number in config file is over zero, please check your data")
+    if (config_data$map_config$legend_num > 0) {
+      message("[WARNING] The legend_num (legend number) in config file is over zero, please check your data!")
     }
     legend_data_plot <- FALSE
   } else {
-    if (config_data$map_config$legmap_num == 0) {
-      message("[INFO] The legmap number in config file is zero, the legmap will not plot")
+    if (config_data$map_config$legend_num == 0) {
+      message("[INFO] The legend_num (legend number) in config file is zero, the legend will not plot.")
       legend_data_plot <- FALSE
     } else {
       legend_data_plot <- TRUE
@@ -97,14 +96,14 @@ gvmap <- function(legend_data,
 
   # read heatmap data
   if (missing(heatmap_data)) {
-    message("[WARNING] heatmap data is missing")
+    message("[WARNING] heatmap data is missing.")
     if (config_data$map_config$heatmap_num > 0) {
-      message("[WARNING] The heatmap number in config file is over zero, please check your data")
+      message("[WARNING] The heatmap_num (heatmap number) in config file is over zero, please check your data!")
     }
     heatmap_data_plot <- FALSE
   } else {
     if (config_data$map_config$heatmap_num == 0) {
-      message("[INFO] The heatmap number in config file is zero, the heatmap will not plot")
+      message("[INFO] The heatmap_num (heatmap number) in config file is zero, the heatmap will not plot.")
       heatmap_data_plot <- FALSE
     } else {
       heatmap_data_plot <- TRUE
@@ -112,134 +111,211 @@ gvmap <- function(legend_data,
     heatmap_data <- readHeatmapFile(heatmap_data)
   }
 
+  if (!heatmap_data_plot & !legend_data_plot) {
+    stop("[ERROR] None heatmap or legend, please check your data!")
+  }
+
+  ## =======================
+  ## Generating plot parameter
+  ## =======================
+
   plot_config <- list(
     plot_width = plot_width,
     plot_height = plot_height,
     stroke_width = stroke_width,
+    dend_stroke_width = dend_stroke_width,
     group_span = group_span,
     sample_span = sample_span,
+    heatmap_row_span = heatmap_row_span,
     frame = frame,
+    frame_stroke_width = frame_stroke_width,
     sample_font_size = sample_font_size,
     legend_font_size = legend_font_size,
     font_family = font_family
   )
 
   if (heatmap_data_plot) {
-    nr <- dim(heatmap_data)[1]
-    nc <- dim(heatmap_data)[2]
+    sample_num <- dim(heatmap_data[[1]])[2]
+    sample <- colnames(heatmap_data[[1]])
+  } else {
+    sample_num <- dim(legend_data)[1]
+    sample <- rownames(legend_data)
+  }
+  plot_config <- c(plot_config, sample_num = sample_num,
+                   list(sample = sample),
+                   list(sample_order = sample))
 
-    # plot parameter
-    plot_config <- c(
-      plot_config,
-      list(
-        heatmap_plot = TRUE,
-        heatmap_num = config_data$map_config$heatmap_num,
-        heatmap_row_num = nr,
-        heatmap_col_num = nc
-      ))
-
-    # pre processing of heatmap data
-
-    ## Dendrograms for Row/Column of heatmap
-    ##=======================
-    dendrogram <- match.arg(dendrogram)
-
-    # Use dendrogram argument to set defaults for Rowv/Colv
-    if (missing(Rowv)) {
-      Rowv <- dendrogram %in% c("both", "row")
+  # heatamap plot parameter
+  if (heatmap_data_plot) {
+    for (i in 1:config_data$map_config$heatmap_num) {
+      plot_config <- getHeatmapParam(heatmap_data, config_data, plot_config, i)
     }
-    if (missing(Colv)) {
-      Colv <- dendrogram %in% c("both", "column")
-    }
+  }
 
+  if (legend_data_plot) {
+    plot_config <- getLegendParam(legend_data, config_data, plot_config)
+  }
+
+  ## =======================
+  ## Data processsing
+  ## =======================
+
+  # heatmap_1 is the leading controller of all plots
+  if (heatmap_data_plot) {
+    Rowv <- config_data$map_config$heatmap_1$Rowv
     if (isTRUE(Rowv)) {
-      Rowv <- rowMeans(heatmap_data, na.rm = na.rm)
+      Rowv <- rowMeans(heatmap_data[[1]], na.rm = config_data$map_config$heatmap_1$na.rm)
     }
     if (is.numeric(Rowv)) {
-      Rowv <- reorderfun(as.dendrogram(hclustfun(distfun(heatmap_data))), Rowv)
+      Rowv <- reorderfun(as.dendrogram(
+        config_data$map_config$heatmap_1$hclustfun( config_data$map_config$heatmap_1$distfun(heatmap_data[[1]]) )
+      ), Rowv)
     }
     if (is.dendrogram(Rowv)) {
       Rowv <- rev(Rowv)
       rowInd <- order.dendrogram(Rowv)
-      if(nr != length(rowInd))
-        stop("[ERROR] Row dendrogram is the wrong size")
+      if(plot_config$heatmap_1$nr != length(rowInd))
+        stop("[ERROR] Row dendrogram in heatmap_1 is the wrong size")
     } else {
-      if (!is.null(Rowv) && !is.na(Rowv) && !identical(Rowv, FALSE))
-        warning("[WARNING] Invalid value for Rowv, ignoring")
+      if (!is.null(Rowv) && !is.na(Rowv) && !identical(Rowv, FALSE)) {
+        warning("[WARNING] Invalid value for Rowv in heatmap_1, ignoring")
+      }
       Rowv <- NULL
-      rowInd <- 1:nr
+      rowInd <- 1:plot_config$heatmap_1$nr
     }
 
-    if (identical(Colv, "Rowv")) {
-      Colv <- Rowv
-    }
+    Colv <- config_data$map_config$heatmap_1$Colv
     if (isTRUE(Colv)) {
-      Colv <- colMeans(heatmap_data, na.rm = na.rm)
+      Colv <- colMeans(heatmap_data[[1]], na.rm = config_data$map_config$heatmap_1$na.rm)
     }
     if (is.numeric(Colv)) {
-      Colv <- reorderfun(as.dendrogram(hclustfun(distfun(t(heatmap_data)))), Colv)
+      Colv <- reorderfun(as.dendrogram(config_data$map_config$heatmap_1$hclustfun(
+        config_data$map_config$heatmap_1$distfun(t(heatmap_data[[1]])))
+      ), Colv)
     }
     if (is.dendrogram(Colv)) {
-      colInd <- order.dendrogram(Colv)
-      if (nc != length(colInd))
-        stop("[ERROR] Col dendrogram is the wrong size")
+      sampleInd <- order.dendrogram(Colv)
+      if (plot_config$heatmap_1$nc != length(sampleInd))
+        stop("[ERROR] Col dendrogram is the wrong size in heatmap_1")
     } else {
-      if (!is.null(Colv) && !is.na(Colv) && !identical(Colv, FALSE))
-        warning("[WARNING] Invalid value for Colv, ignoring")
-      Colv <- NULL
-      colInd <- 1:nc
+      if (!is.null(Colv) && !is.na(Colv) && !identical(Colv, FALSE)) {
+        warning("[WARNING] Invalid value for Colv in heatmap_1, ignoring")
+      }
+      Colv <- FALSE
+      sampleInd <- 1:plot_config$heatmap_1$nc
     }
 
+    if(is.dendrogram(Rowv) & (config_data$map_config$heatmap_1$kmer_row > 1)) {
+      color_theme <- config_data$map_config$heatmap_1$kmer_row_color
+      col_idx <- which(names(config_data$color_config) == color_theme)
+      color_theme <- config_data$color_config[[col_idx]]
+      color_theme <- color_theme[1:config_data$map_config$heatmap_1$kmer_row]
 
-    # TODO:  We may wish to change the defaults a bit in the future
-    ## revC
-    ##=======================
-    if(missing(revC)) {
-      if (symm) {
-        revC <- TRUE
-      } else if(is.dendrogram(Colv) & is.dendrogram(Rowv) & identical(Rowv, rev(Colv))) {
-        revC <- TRUE
-      } else {
-        revC <- FALSE
+      Rowv <- dendextend::color_branches(Rowv,
+                                         k = config_data$map_config$heatmap_1$kmer_row,
+                                         col = color_theme)
+    }
+    if(is.dendrogram(Colv) & !is.null(config_data$map_config$heatmap_1$kmer_col > 1)) {
+      color_theme <- config_data$map_config$heatmap_1$kmer_col_color
+      col_idx <- which(names(config_data$color_config) == color_theme)
+      color_theme <- config_data$color_config[[col_idx]]
+      color_theme <- color_theme[1:config_data$map_config$heatmap_1$kmer_col]
+
+      Colv <- dendextend::color_branches(Colv,
+                                         k = config_data$map_config$heatmap_1$kmer_col,
+                                         col = color_theme)
+    }
+
+    config_data$map_config$heatmap_1$Rowv = Rowv
+    config_data$map_config$heatmap_1$rowInd = rowInd
+    config_data$map_config$heatmap_1$Colv = Colv
+    config_data$map_config$sampleInd = sampleInd
+
+    # reorder heatmap_1
+    heatmap_sub_data <- heatmap_data[[1]]
+    if (!config_data$map_config$heatmap_1$raw_data) {
+      heatmap_sub_data <- heatmapRowZdata(heatmap_sub_data)
+    }
+    # reorder heatmap mat
+    heatmap_sub_data <- heatmap_sub_data[rowInd, sampleInd]
+    heatmap_data[[1]] <- heatmap_sub_data
+
+    plot_config$sample_order <- plot_config$sample[sampleInd]
+
+    # reorder other heatmap data
+    if (config_data$map_config$heatmap_num > 1) {
+      for (i in 2:config_data$map_config$heatmap_num) {
+        heatmap_sub_name <- paste0("heatmap_", i)
+        heatmap_sub_info <- config_data$map_config[[which(names(config_data$map_config) == heatmap_sub_name)]]
+        heatmap_sub_data <- heatmap_data[[which(names(heatmap_data) == heatmap_sub_name)]]
+        heatmap_sub_plot <- plot_config[[which(names(plot_config) == heatmap_sub_name)]]
+
+        col_idx <- match(plot_config$sample_order, colnames(heatmap_sub_data))
+
+        if (anyNA(col_idx)) {
+          message("[WARNING] The sample value of ", heatmap_sub_name," data doesd't match heatmap_1")
+        }
+        heatmap_sub_data <- heatmap_sub_data[, col_idx]
+        colnames(heatmap_sub_data) <- plot_config$sample_order
+
+        Rowv <- heatmap_sub_info$Rowv
+        if (isTRUE(Rowv)) {
+          Rowv <- rowMeans(heatmap_sub_data, na.rm = heatmap_sub_info$na.rm)
+        }
+        if (is.numeric(Rowv)) {
+          Rowv <- reorderfun(as.dendrogram(
+            heatmap_sub_info$hclustfun( heatmap_sub_info$distfun(heatmap_sub_data) )
+          ), Rowv)
+        }
+        if (is.dendrogram(Rowv)) {
+          Rowv <- rev(Rowv)
+          rowInd <- order.dendrogram(Rowv)
+          if(heatmap_sub_plot$nr != length(rowInd))
+            stop("[ERROR] Row dendrogram in ", heatmap_sub_name , " is the wrong size")
+        } else {
+          if (!is.null(Rowv) && !is.na(Rowv) && !identical(Rowv, FALSE)) {
+            warning("[WARNING] Invalid value for Rowv in  ", heatmap_sub_name , ", ignoring")
+          }
+          Rowv <- FALSE
+          rowInd <- 1:heatmap_sub_plot$nr
+        }
+        if (!heatmap_sub_info$raw_data) {
+          heatmap_sub_data <- heatmapRowZdata(heatmap_sub_data)
+        }
+        # reorder heatmap mat
+        heatmap_sub_data <- heatmap_sub_data[rowInd, ]
+        heatmap_data[[which(names(heatmap_data) == heatmap_sub_name)]] <- heatmap_sub_data
+        config_data$map_config[[which(names(config_data$map_config) == heatmap_sub_name)]]$Rowv <- Rowv
+        config_data$map_config[[which(names(config_data$map_config) == heatmap_sub_name)]]$rowInd <- rowInd
       }
     }
-    if(revC) {
-      Colv <- rev(Colv)
-      colInd <- rev(colInd)
-    }
-
-    ## reorder x (and others)
-    ##=======================
-    heatmap_data <- heatmap_data[rowInd, colInd]
   }
-
 
   if (legend_data_plot) {
-
-    # pre processing of legmap data
-    # reorder legend data
-    if (heatmap_data_plot) {
-      leg.ind <- match(colnames(heatmap_data), row.names(legend_data))
-      if (anyNA(leg.ind)) {
-        message("[WARNING] The rownames value of legend data doesd't match heatmap")
-      }
-      legend_data <- legend_data[leg.ind, ]
-      row.names(legend_data) <- colnames(heatmap_data)
+    leg_sample <- rownames(legend_data)
+    leg_idx <- match(plot_config$sample_order, leg_sample)
+    if (anyNA(leg_idx)) {
+      message("[WARNING] The rownames value of legend data doesd't match heatmap")
     }
-
-    # add lengend data config
-    plot_config <- c(
-      plot_config,
-      list(
-        legmap_plot = TRUE,
-        legmap_num = config_data$map_config$legmap_num,
-        legmap_col_num = length(row.names(legend_data)),
-        legmap_row_num = unlist(lapply(1:config_data$map_config$legmap_num, function(x) {
-          length(config_data$map_config[[grep("legmap_[0-9]", names(config_data$map_config))[x]]])
-        })))
-    )
+    legend_data <- legend_data[leg_idx, ]
+    rownames(legend_data) <- plot_config$sample_order
   }
-  plot_config <- checkPlotConfig(plot_config)
+
+  # calculate SVG location
+  plot_config <- checkPlotConfig(plot_config, config_data)
+
+  ## =======================
+  ## Generating SVG element
+  ## =======================
+  def_content <- ""
+
+  ## =======================
+  ## Generating SVG Location
+  ## =======================
+
+  ## =======================
+  ## Output the result
+  ## =======================
 
   # ------------------------------------
   # svg element generate
