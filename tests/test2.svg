@@ -2995,18 +2995,6 @@
 <text x="115.8" y="85.1428571428571" style="font-family:Arial;font-size:12;text-anchor:start;" >frameshift</text>
 <rect x="184.8" y="73.1428571428571" width="12" height="12"   style="fill:#3987CC;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-opacity:1;" />
 <text x="199.8" y="85.1428571428571" style="font-family:Arial;font-size:12;text-anchor:start;" >missense</text></g>
-
-<g id="sample_list"  >
-<text x="38" y="0" style="font-family:Arial;font-size:20;text-anchor:start;" transform="rotate(90,38,0)">M4003</text>
-<text x="114" y="0" style="font-family:Arial;font-size:20;text-anchor:start;" transform="rotate(90,114,0)">M4004</text>
-<text x="190" y="0" style="font-family:Arial;font-size:20;text-anchor:start;" transform="rotate(90,190,0)">M4001</text>
-<text x="286" y="0" style="font-family:Arial;font-size:20;text-anchor:start;" transform="rotate(90,286,0)">M4002</text>
-<text x="362" y="0" style="font-family:Arial;font-size:20;text-anchor:start;" transform="rotate(90,362,0)">M4005</text>
-<text x="458" y="0" style="font-family:Arial;font-size:20;text-anchor:start;" transform="rotate(90,458,0)">M1002</text>
-<text x="574" y="0" style="font-family:Arial;font-size:20;text-anchor:start;" transform="rotate(90,574,0)">M1003</text>
-<text x="650" y="0" style="font-family:Arial;font-size:20;text-anchor:start;" transform="rotate(90,650,0)">M1005</text>
-<text x="726" y="0" style="font-family:Arial;font-size:20;text-anchor:start;" transform="rotate(90,726,0)">M1004</text>
-<text x="802" y="0" style="font-family:Arial;font-size:20;text-anchor:start;" transform="rotate(90,802,0)">M1001</text></g>
 </defs>
 
 
@@ -3019,14 +3007,13 @@
 <use xlink:href="#heatmap_1_grad" x="0" y="103.4" transform="      " />
 <use xlink:href="#legend_1_mat" x="240" y="670" transform="      " />
 <use xlink:href="#legend_1_outline" x="240" y="670" transform="      " />
-<use xlink:href="#legend_1_leg_text" x="60" y="1372" transform="      " />
+<use xlink:href="#legend_1_leg_text" x="60" y="1272" transform="      " />
 <use xlink:href="#heatmap_2_dend_row" x="0" y="0" transform=" scale(-1,1) rotate(90,0,0) translate(848.745714285714,0)   " />
 <use xlink:href="#heatmap_2_exp_mat" x="240" y="846.285714285714" transform="      " />
 <use xlink:href="#heatmap_2_grad" x="0" y="821.685714285714" transform="      " />
 <use xlink:href="#legend_2_mat" x="240" y="1132.28571428571" transform="      " />
 <use xlink:href="#legend_2_outline" x="240" y="1132.28571428571" transform="      " />
-<use xlink:href="#legend_2_leg_text" x="60" y="1518.28571428571" transform="      " />
-<use xlink:href="#sample_list" x="240" y="1272" transform="      " /></g>
+<use xlink:href="#legend_2_leg_text" x="60" y="1418.28571428571" transform="      " /></g>
 
 
 </svg>

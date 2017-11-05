@@ -26,7 +26,7 @@ gvmapConfig <- function(config_file) {
                         three_hit = "#237023"),
     pool_col = c("#1B9E77", "#D95F02", "#7570B3", "#E7298A", "#66A61E", "#E6AB02", "#A6761D", "#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", "#FDBF6F", "#FF7F00", "#CAB2D6", "#6A3D9A"),
     gradient_col_gr = c("green", "black", "red"),
-    gradient_col_yp = c("yellow", "white", "purple"),
+    gradient_col_op = c("orange", "white", "purple"),
     gradient_col_br = c("blue", "white", "red"),
     gradient_col_gw = c("green", "white"),
     gv_line_col = "#FDBF6F",
@@ -97,7 +97,7 @@ gvmapConfig <- function(config_file) {
         hparam <- c(hparam, color_theme = "gradient_col_gr")
       }
       if (!"distfun" %in% names(config_info$map_config[[hid]])) {
-        hparam <- c(hparam, hclustfunc = dist)
+        hparam <- c(hparam, distfun = dist)
       } else {
         if (config_info$map_config[[hid]]$distfun == "sih") {
           config_info$map_config[[hid]]$distfun <- function(x) as.dist((1-cor(t(x)))/2)
@@ -139,7 +139,7 @@ gvmapConfig <- function(config_file) {
     message("[WARNING] color_config info is not provided!")
     message("[INFO] Use default color theme!")
 
-    config_info <- c(config_info, default_color_theme)
+    config_info <- c(config_info, list(color_config = default_color_theme))
   } else {
     chk <- names(default_color_theme) %in% names(config_info$color_config)
     if (!all(chk)) {

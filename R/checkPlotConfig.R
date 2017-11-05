@@ -57,6 +57,8 @@ getHeatmapParam <- function(heatmap_data, config_data, plot_config, i) {
   hparam <- list(a = hparam)
   names(hparam) <- heatmap_name
 
+  plot_config$sample_text_width <- rect_w
+
   plot_config_com <- c(plot_config, hparam)
 
   return(plot_config_com)
@@ -100,7 +102,7 @@ getLegendParam <- function(legend_data, config_data, plot_config) {
   if (plot_config$sample_span == 0) {
     rect_w <- w / plot_config$sample_num
   } else {
-    rect_w <- (w - (kmer_col - 1 + length(config_data$map_config$split_sample)) * plot_config$sample_span) / length(plot_config$sample_num)
+    rect_w <- (w - (kmer_col - 1 + length(config_data$map_config$split_sample)) * plot_config$sample_span) / plot_config$sample_num
   }
 
   if (is.null(plot_config$sample_font_size)) {
@@ -121,6 +123,8 @@ getLegendParam <- function(legend_data, config_data, plot_config) {
   )
 
   lparam <- list(legend = lparam)
+
+  plot_config$sample_text_width <- rect_w
 
   plot_config_com <- c(plot_config, lparam)
 
@@ -155,7 +159,7 @@ checkPlotConfig <- function(plot_config, config_data) {
   for (i in 1:length(group_order)) {
     if (grepl("^heatmap_", group_order[i])) {
       x <- plot_config[[which(names(plot_config) == group_order[i])]]
-      group_baseline[i+1] <- group_baseline[i] + x$h + plot_config$group_span
+      group_baseline[i+1] <- group_baseline[i] + x$h*0.8 + plot_config$group_span
     } else if (grepl("^legend_", group_order[i])) {
       lid <- match(group_order[i], names(config_data$map_config))
       x <- plot_config[[which(names(plot_config) == "legend")]]

@@ -1,4 +1,38 @@
 
+file_r <- dir(path = "R/")
+file_p <- paste0("R/", file_r)
+for (k in file_p) {
+  source(file = k)
+}
+
+
+legend_data <- "inst/extdata/gvmap.test.txt"
+config_file <- "inst/extdata/config.yaml"
+
+heatmap_data_file_1 <- "inst/extdata/count.txt"
+heatmap_data_file_2 <- "inst/extdata/count.1.txt"
+heatmap_data_file_3 <- "inst/extdata/count.1.txt"
+heatmap_data <- list(heatmap_1 = heatmap_data_file_1,
+                     heatmap_2 = heatmap_data_file_2,
+                     heatmap_3 = heatmap_data_file_3)
+
+output_svg_name <- "tests/out1.svg"
+
+gvmap(legend_data = legend_data,
+      heatmap_data = heatmap_data,
+      config_file = config_file,
+      output_svg_name = output_svg_name,
+      group_span = 10,
+      sample_span = 5,
+      frame_stroke_width = 2,
+      heatmap_row_span = 4,
+      dend_stroke_width = 3,
+      stroke_width = 2)
+
+
+
+
+############################################
 exp_mat <- read.csv("inst/extdata/symbol.raw_data.csv", header = T)
 
 exp_mat <- read.table("inst/extdata/count.txt", header = T)
@@ -34,9 +68,9 @@ plot_width = 1200
 plot_height = 1600
 stroke_width = 0.5
 dend_stroke_width = 2
-group_span = 10
-sample_span = 0
-heatmap_row_span = 0
+group_span = 30
+sample_span = 20
+heatmap_row_span = 10
 frame = TRUE
 frame_stroke_width = 2
 sample_font_size = NULL
@@ -50,6 +84,13 @@ library(dendextend)
 library(matrixStats)
 library(easySVG)
 library(rsvg)
+
+
+
+dend <- dendextend::color_branches(dend,
+                           k = 3,
+                           col = c("#000000"),
+                           groupLabels = T)
 
 
 
