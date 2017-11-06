@@ -11,6 +11,7 @@ map_config:
     kmer_row_color: "pool_col"
     dendrogram: "both"
     Rowv: TRUE
+    Colv: TRUE
     color_theme: "gradient_col_gr"
     distfun: "dist"
     hclustfun: "hclust"
@@ -19,7 +20,7 @@ map_config:
     kmer_col: 3
     kmer_row: 2
     split_row_name: NULL
-    percentage: 0.2
+    percentage: 0.1
     kmer_col_color: "kmer_col"
     kmer_row_color: "kmer_col"
     dendrogram: "both"
@@ -32,7 +33,7 @@ map_config:
     kmer_col: 3
     kmer_row: 2
     split_row_name: NULL
-    percentage: 0.2
+    percentage: 0.1
     kmer_col_color: "kmer_col"
     kmer_row_color: "kmer_col"
     dendrogram: "both"
@@ -63,7 +64,6 @@ map_config:
     - "heatmap_2"
     - "legend_2"
     - "legend_3"
-    - "heatmap_3"
   split_sample: 
     - "M1003"
     - "M4002"

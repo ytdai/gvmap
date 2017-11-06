@@ -125,7 +125,8 @@ gvmap <- function(legend_data,
 
   plot_config <- list(
     plot_width = plot_width,
-    plot_height = plot_height,
+    plot_height = plot_height*0.9,
+    plot_out_height = plot_height,
     stroke_width = stroke_width,
     dend_stroke_width = dend_stroke_width,
     group_span = group_span,
@@ -362,7 +363,7 @@ gvmap <- function(legend_data,
         list(col_attr = col_attr, row_attr = row_attr)
       )
 
-      if (i ==1 ) {
+      if (i == 1) {
         config_data$map_config$heatmap_kmer_gap = col_attr
       }
     }
@@ -445,7 +446,7 @@ gvmap <- function(legend_data,
     if (grepl("^heatmap_", order_name)) {
       heatmap_sub_info <- config_data$map_config[[which(names(config_data$map_config) == order_name)]]
       heatmap_sub_plot <- plot_config[[which(names(plot_config) == heatmap_sub_name)]]
-      if (i == 1) {
+      if (order_name == "heatmap_1") {
         if (heatmap_sub_info$dendrogram == "both" | heatmap_sub_info$dendrogram == "col") {
           col_dend_use <- use.svg(id = paste0(order_name, "_dend_col"),
                                   x = heatmap_sub_plot$w*0.2 + 0.5*heatmap_sub_plot$rect_w,
@@ -480,7 +481,7 @@ gvmap <- function(legend_data,
                                 y = plot_config$group_baseline[i])
       legend_app_use <- use.svg(id = paste0(order_name, "_leg_text"),
                                 x = plot_config$plot_width * 0.05,
-                                y = plot_config$group_baseline[length(plot_config$group_baseline)] + kk + plot_config$sample_font_size*5)
+                                y = plot_config$group_baseline[length(plot_config$group_baseline)] + kk + plot_config$sample_font_size*4)
       kk <- kk + legend_sub_plot$rect_h * length(legend_sub_info)
       use_content <- paste(use_content, legend_mat_use, legend_out_use, legend_app_use, sep = "\n")
     }
@@ -499,7 +500,7 @@ gvmap <- function(legend_data,
   ## =======================
   pack_content <- paste(def_content, use_content, sep = "\n\n")
   pack.svg(pack.content = pack_content, output.svg.name = output_svg_name,
-           width = plot_config$plot_width, height = plot_config$plot_height)
+           width = plot_config$plot_width, height = plot_config$plot_out_height)
   if (convert_pdf) {
     rsvg_pdf(svg = output_svg_name, file = gsub(".svg$", ".pdf", output_svg_name))
   }

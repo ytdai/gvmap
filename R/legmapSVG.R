@@ -5,6 +5,10 @@ sampleSVG <- function(plot_config, gap_info, id) {
   col_label <- which(!is.na(gap_info$node_label))
   col_gap <- gap_info$node_kmer_gap[col_label] + gap_info$node_name_gap[col_label]
 
+  if (length(col_gap) == 0) {
+    col_gap <- rep(0, length(plot_config$sample_order))
+  }
+
   sample_name <- plot_config$sample_order
 
   sample_svg <- lapply(1:length(sample_name), function(x) {
@@ -33,6 +37,9 @@ legendGroupSVG <- function(config_data, plot_config, legend_data, legend_sub_inf
   col_label <- which(!is.na(gap_info$node_label))
   col_gap <- gap_info$node_kmer_gap[col_label] + gap_info$node_name_gap[col_label]
 
+  if (length(col_gap) == 0) {
+    col_gap <- rep(0, length(plot_config$sample_order))
+  }
 
   # rect information
   baseline <- 0
@@ -49,7 +56,7 @@ legendGroupSVG <- function(config_data, plot_config, legend_data, legend_sub_inf
   if (plot_config$frame) {
     group_gap <- data.frame(table(col_gap))
 
-    if (dim(group_gap)[1] == 1) {
+    if (dim(group_gap)[1] <= 1) {
       group_outline <- rect.svg(x = 0, y = 0,
                                 width = legend_sub_plot$rect_w * length(row.names(legend_data)),
                                 height = legend_sub_plot$rect_h * length(group_col_num),

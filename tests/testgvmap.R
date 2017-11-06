@@ -25,14 +25,16 @@ gvmap(legend_data = legend_data,
       group_span = 10,
       sample_span = 5,
       frame_stroke_width = 2,
-      heatmap_row_span = 4,
-      dend_stroke_width = 3,
-      stroke_width = 2)
+      heatmap_row_span = 2,
+      dend_stroke_width = 2,
+      stroke_width = 1,
+      plot_width = 1000,
+      plot_height = 1300)
 
 
 
 
-############################################
+ ############################################
 exp_mat <- read.csv("inst/extdata/symbol.raw_data.csv", header = T)
 
 exp_mat <- read.table("inst/extdata/count.txt", header = T)
