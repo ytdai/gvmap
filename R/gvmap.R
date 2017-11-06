@@ -481,7 +481,7 @@ gvmap <- function(legend_data,
                                 y = plot_config$group_baseline[i])
       legend_app_use <- use.svg(id = paste0(order_name, "_leg_text"),
                                 x = plot_config$plot_width * 0.05,
-                                y = plot_config$group_baseline[length(plot_config$group_baseline)] + kk + plot_config$sample_font_size*4)
+                                y = plot_config$group_baseline[length(plot_config$group_baseline)] + kk + plot_config$sample_font_size*10)
       kk <- kk + legend_sub_plot$rect_h * length(legend_sub_info)
       use_content <- paste(use_content, legend_mat_use, legend_out_use, legend_app_use, sep = "\n")
     }

@@ -12,12 +12,12 @@ dendSVG <- function(dend_attr,
   dend_line <- lapply(2:length(dend_attr$node_x), function(x) {
     pos1 <- c(dend_attr$node_x[dend_attr$node_father[x]], dend_attr$node_y[dend_attr$node_father[x]])
     pos2 <- c(dend_attr$node_x[x], dend_attr$node_y[x])
-    line1 <- line.svg(x1 = pos1[1], y1 = (max(dend_attr$node_y) - pos1[2]),
-                      x2 = pos2[1], y2 = (max(dend_attr$node_y) - pos1[2]),
+    line1 <- line.svg(x1 = round(pos1[1]), y1 = round(max(dend_attr$node_y) - pos1[2]),
+                      x2 = round(pos2[1]), y2 = round(max(dend_attr$node_y) - pos1[2]),
                       stroke.width = plot_config$dend_stroke_width,
                       stroke = dend_attr$node_color[x])
-    line2 <- line.svg(x1 = pos2[1], y1 = (max(dend_attr$node_y) - pos1[2]),
-                      x2 = pos2[1], y2 = (max(dend_attr$node_y) - pos2[2]),
+    line2 <- line.svg(x1 = round(pos2[1]), y1 = round(max(dend_attr$node_y) - pos1[2]),
+                      x2 = round(pos2[1]), y2 = round(max(dend_attr$node_y) - pos2[2]),
                       stroke.width = plot_config$dend_stroke_width,
                       stroke = dend_attr$node_color[x])
     return(c(line1, line2))
@@ -101,16 +101,16 @@ heatmapSVG <- function(heatmap_sub_data, heatmap_sub_info, heatmap_sub_plot,
 
   heatmap_svg_ele <- lapply(1:nr, function(m) {
     heatmap_svg_gene <- lapply(1:nc, function(n) {
-      rect.svg(x = heatmap_sub_plot$rect_w*(n-1) + col_gap[n],
-               y = heatmap_sub_plot$rect_h*(m-1) + row_gap[m],
+      rect.svg(x = round(heatmap_sub_plot$rect_w*(n-1) + col_gap[n]),
+               y = round(heatmap_sub_plot$rect_h*(m-1) + row_gap[m]),
                width = heatmap_sub_plot$rect_w,
                height = heatmap_sub_plot$rect_h,
                fill = color_list[heatmap_sub_data_col[m, n]],
                stroke = "none")
     })
     exp_svg <- paste(unlist(heatmap_svg_gene), collapse = "\n")
-    text_svg <- get.text.svg(x = heatmap_sub_plot$w*0.71,
-                             y = heatmap_sub_plot$rect_h*m + row_gap[m],
+    text_svg <- get.text.svg(x = round(heatmap_sub_plot$w*0.71),
+                             y = round(heatmap_sub_plot$rect_h*m + row_gap[m]),
                              text.content = rownames(heatmap_sub_data)[m],
                              font.size = heatmap_sub_plot$row_fz)
     return(paste(exp_svg, text_svg, sep = "\n"))
