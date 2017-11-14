@@ -1,6 +1,6 @@
-#'
-#' heatmap plot parameter
-#'
+#
+# heatmap plot parameter
+#
 getHeatmapParam <- function(heatmap_data, config_data, plot_config, i) {
   heatmap_name <- paste0("heatmap_", i)
   hid <- which(names(config_data$map_config) == heatmap_name)
@@ -65,9 +65,9 @@ getHeatmapParam <- function(heatmap_data, config_data, plot_config, i) {
 }
 
 
-#'
-#' legend plot parameter
-#'
+#
+# legend plot parameter
+#
 getLegendParam <- function(legend_data, config_data, plot_config) {
   legend_name <- paste0("legend_", 1:config_data$map_config$legend_num)
   lid <- match(legend_name, names(config_data$map_config))
@@ -134,14 +134,14 @@ getLegendParam <- function(legend_data, config_data, plot_config) {
 }
 
 
-#'
-#' checkPlotConfig
-#'
-#' heatmap 60%
-#' legmap 20%
-#' legmap explain + other 20%
-#'
-#'
+#
+# checkPlotConfig
+#
+# heatmap 60%
+# legmap 20%
+# legmap explain + other 20%
+#
+#
 checkPlotConfig <- function(plot_config, config_data) {
   group_order <- config_data$map_config$map_order
   group_baseline <- rep(0, (length(group_order) + 1))

@@ -23,17 +23,61 @@ heatmap_data <- list(heatmap_1 = heatmap_data_file_1,
                      heatmap_2 = heatmap_data_file_2,
                      heatmap_3 = heatmap_data_file_3)
 
+gvmap(legend_data = legend_data,
+      heatmap_data = heatmap_data,
+      config_file = config_file,
+      output_svg_name = "tests/o1.svg",
+      sample_span = 20,
+      heatmap_row_span = 10)
+
+rsvg_pdf(svg = "tests/g3.min.svg", file = "tests/g3.min.pdf")
+
+# ==================================
+h1 <- read.table(file = "tests/g3.heatmap1.txt", sep = "\t")
+h2 <- read.table(file = "tests/g3.heatmap2.txt", sep = "\t")
+sampleinfo <- read.table( file = "tests/g3.sampleinfo.txt", sep = "\t")
+mut <- read.table( file = "tests/g3.mutation.txt", sep = "\t")
+
+mun_tag <- rep(0, length(mut))
+for (i in 1:length(mut)) {
+  mun_tag[i] <- length(which(mut[, i] == "0"))
+}
+plot_mut_mat <- mut[, (mun_tag < 159)]
+
+data_plot_info <- cbind(sampleinfo, plot_mut_mat)
+row.names(data_plot_info) <- data_plot_info$x
+
+
+h11 <- h1[, 1:100]
+h2 <- h2[1:120, ]
+
+heatmap_data <- list(heatmap_1 = h1)
+
+legend_data <- data_plot_info
+
 output_svg_name <- "tests/g3.svg"
-config_file <- "inst/extdata/config.g3.yaml"
+config_file <- "tests/config.g3.yaml"
+
+plot_width = 1200
+plot_height = 1600
+stroke_width = 0.5
+dend_stroke_width = 2
+group_span = 30
+sample_span = 20
+heatmap_row_span = 10
+frame = TRUE
+frame_stroke_width = 2
+sample_font_size = NULL
+legend_font_size = NULL
+font_family = "Arial"
+
 
 gvmap(legend_data = legend_data,
       heatmap_data = heatmap_data,
       config_file = config_file,
       output_svg_name = output_svg_name,
-      plot_width = 1200,
-      plot_height = 1600,
       dend_stroke_width = 1,
-      heatmap_row_span = 10)
+      convert_pdf = TRUE)
 
 
 
@@ -86,7 +130,7 @@ sig_gene <- rowVars(as.matrix(g3_exp))
 sig_gene_data <- data.frame(index = 1:length(sig_gene),
                             var = sig_gene)
 sig_gene_data <- sig_gene_data[ order(sig_gene_data$var, decreasing = T), ]
-sel <- sig_gene_data[1:floor(length(sig_gene_data[ , 1]) * 0.05), ]
+sel <- sig_gene_data[1:floor(length(sig_gene_data[ , 1]) * 0.1), ]
 
 heatmap_1 <- g3_exp[sel$index, ]
 
@@ -142,6 +186,11 @@ plot_mut_mat <- mut_mat[, (mun_tag < 159)]
 
 data_plot_info <- cbind(sample_order_merge, plot_mut_mat)
 
+write.table(heatmap_1, file = "tests/g3.heatmap1.txt", sep = "\t", col.names = T, row.names = T, quote = F)
+write.table(heatmap_2, file = "tests/g3.heatmap2.txt", sep = "\t", col.names = T, row.names = T, quote = F)
+write.table(sample_order_merge, file = "tests/g3.sampleinfo.txt", sep = "\t", col.names = T, row.names = T, quote = F)
+write.table(mut_mat, file = "tests/g3.mutation.txt", sep = "\t", col.names = T, row.names = T, quote = F)
+
 
 heatmap_1_f <- heatmap_1[, 90:150]
 heatmap_2_f <- heatmap_2[, 90:150]
@@ -179,7 +228,12 @@ heatmap.2(heatmap_data,
           key = TRUE, symkey = FALSE, density.info = "none",
           trace = "none", cexRow = 0.5)
 
-heatmap.2(heatmap_sub_data, scale = "col",
+heatmap.2(as.matrix(h0), scale = "col",
+          col = colorRampPalette(c("green", "black", "red"))(400),
+          dendrogram = 'both', density.info = "none",
+          trace = "none", cexRow = 0.5)
+
+heatmap.2(as.matrix(h00), scale = "col",
           col = colorRampPalette(c("green", "black", "red"))(400),
           dendrogram = 'both', density.info = "none",
           trace = "none", cexRow = 0.5)

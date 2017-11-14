@@ -1,6 +1,6 @@
-#'
-#' Conver legend sample information into svg elements
-#'
+#
+# Conver legend sample information into svg elements
+#
 sampleSVG <- function(plot_config, gap_info, id) {
   col_label <- which(!is.na(gap_info$node_label))
   col_gap <- gap_info$node_kmer_gap[col_label] + gap_info$node_name_gap[col_label]
@@ -12,7 +12,7 @@ sampleSVG <- function(plot_config, gap_info, id) {
   sample_name <- plot_config$sample_order
 
   sample_svg <- lapply(1:length(sample_name), function(x) {
-    get.text.svg(x = round((x-0.5)*plot_config$sample_text_width + col_gap[x]),
+    get.text.svg(x = (x-0.5)*plot_config$sample_text_width + col_gap[x],
                  y = 0, text.content = sample_name[x],
                  font.size = plot_config$sample_font_size,
                  rotate = 90)
@@ -23,9 +23,9 @@ sampleSVG <- function(plot_config, gap_info, id) {
 }
 
 
-#'
-#'
-#'
+#
+#
+#
 legendGroupSVG <- function(config_data, plot_config, legend_data, legend_sub_info, legend_sub_plot, gap_info, id) {
   group_name <- id
 
@@ -60,7 +60,7 @@ legendGroupSVG <- function(config_data, plot_config, legend_data, legend_sub_inf
       group_outline <- rect.svg(x = 0, y = 0,
                                 width = legend_sub_plot$rect_w * length(row.names(legend_data)),
                                 height = legend_sub_plot$rect_h * length(group_col_num),
-                                fill = "none", stroke.width = plot_config$frame_stroke_width)
+                                fill = "none")
     } else {
       group_outline <- lapply(1:dim(group_gap)[1], function(x) {
         if (x == 1) {
@@ -72,7 +72,7 @@ legendGroupSVG <- function(config_data, plot_config, legend_data, legend_sub_inf
                  y = 0,
                  width = legend_sub_plot$rect_w * group_gap$Freq[x],
                  height = legend_sub_plot$rect_h * length(group_col_num),
-                 fill = "none", stroke.width = plot_config$frame_stroke_width)
+                 fill = "none")
       })
     }
 
@@ -82,11 +82,10 @@ legendGroupSVG <- function(config_data, plot_config, legend_data, legend_sub_inf
     if (!is.null(split_sample_name)) {
       split_sample_line <- lapply(1:length(split_sample_name), function(x) {
         sp_idx <- which(sample_name == split_sample_name[x])
-        sp_line <- line.svg( x1 = legend_sub_plot$rect_w * sp_idx + col_gap[sp_idx],
+        sp_line <- line.svg( x1 = legend_sub_plot$rect_w * (sp_idx-1) + col_gap[sp_idx],
                              y1 = 0,
-                             x2 = legend_sub_plot$rect_w * sp_idx + col_gap[sp_idx],
-                             y2 = legend_sub_plot$rect_h * length(group_col_num),
-                             stroke.width = plot_config$frame_stroke_width)
+                             x2 = legend_sub_plot$rect_w * (sp_idx-1) + col_gap[sp_idx],
+                             y2 = legend_sub_plot$rect_h * length(group_col_num))
       })
     } else {
       split_sample_line <- ""
@@ -98,7 +97,8 @@ legendGroupSVG <- function(config_data, plot_config, legend_data, legend_sub_inf
 
   group_rect_svg <- group.svg(id = paste0(group_name, "_mat"), group.content = paste(rect, collapse = "\n"))
   group_legend_svg <- group.svg(id = paste0(group_name, "_leg_text"), group.content = paste(leg_text, collapse = "\n"))
-  group_outline_svg <- group.svg(id = paste0(group_name, "_outline"), group.content = paste(unlist(group_outline), unlist(split_sample_line), collapse = "\n"))
+  group_outline_svg <- group.svg(id = paste0(group_name, "_outline"), group.content = paste(unlist(group_outline), unlist(split_sample_line), collapse = "\n"),
+                                 stroke.width = plot_config$frame_stroke_width, stroke = "#000000")
 
   group_svg <- paste(group_rect_svg, group_outline_svg, group_legend_svg, sep = "\n")
 
@@ -106,33 +106,33 @@ legendGroupSVG <- function(config_data, plot_config, legend_data, legend_sub_inf
 }
 
 
-#'
-#' get every row rect element
-#'
-#'
+#
+# get every row rect element
+#
+#
 getLegRowRectSVG <- function(type, color_theme, col_num, legend_data, legend_sub_plot, col_gap, config_data, plot_config, baseline) {
   colname_info <- type
   #message(colname_info)
   content <- as.matrix(legend_data[, col_num])
   rect <- rep("", length(col_num))
 
-  colname_text <-  paste(get.text.svg( x=round(-legend_sub_plot$row_fz*0.5),
-                                       y=round((0.5+baseline)*legend_sub_plot$rect_h+legend_sub_plot$row_fz*0.5),
+  colname_text <-  paste(get.text.svg( x=-legend_sub_plot$row_fz*0.5,
+                                       y=(0.5+baseline)*legend_sub_plot$rect_h+legend_sub_plot$row_fz*0.5,
                                        text.anchor = "end",
                                        text.content = colname_info,
                                        font.size = legend_sub_plot$row_fz),
                          line.svg( x1=0,
-                                   y1=round((0.5+baseline)*legend_sub_plot$rect_h),
-                                   x2=round(-legend_sub_plot$row_fz*0.3),
-                                   y2=round((0.5+baseline)*legend_sub_plot$rect_h),
+                                   y1=(0.5+baseline)*legend_sub_plot$rect_h,
+                                   x2=-legend_sub_plot$row_fz*0.3,
+                                   y2=(0.5+baseline)*legend_sub_plot$rect_h,
                                    stroke.width = plot_config$stroke_width),
                          sep = "\n")
 
   if (grepl("^bg_", color_theme)) {
     # bg_col theme
     rect <- lapply(1:length(content), function(x) {
-      rect.svg( x = round((x-1)*legend_sub_plot$rect_w + col_gap[x]),
-                y = round(baseline*legend_sub_plot$rect_h),
+      rect.svg( x = (x-1)*legend_sub_plot$rect_w + col_gap[x],
+                y = baseline*legend_sub_plot$rect_h,
                 width = legend_sub_plot$rect_w,
                 height = legend_sub_plot$rect_h,
                 fill = config_data$color_config$bg_col,
@@ -145,16 +145,16 @@ getLegRowRectSVG <- function(type, color_theme, col_num, legend_data, legend_sub
     color_this <- config_data$color_config[[match(color_theme, names(config_data$color_config))]]
     rect <- lapply(1:length(content), function(x) {
       if (content[x] == 0 | is.na(content[x])) {
-        rect.svg( x = round((x-1)*legend_sub_plot$rect_w + col_gap[x]),
-                  y = round(baseline*legend_sub_plot$rect_h),
+        rect.svg( x = (x-1)*legend_sub_plot$rect_w + col_gap[x],
+                  y = baseline*legend_sub_plot$rect_h,
                   width = legend_sub_plot$rect_w,
                   height = legend_sub_plot$rect_h,
                   fill = config_data$color_config$bg_col,
                   stroke = config_data$color_config$white_col,
                   stroke.width = plot_config$stroke_width)
       } else {
-        rect.svg( x = round((x-1)*legend_sub_plot$rect_w + col_gap[x]),
-                  y = round(baseline*legend_sub_plot$rect_h),
+        rect.svg( x = (x-1)*legend_sub_plot$rect_w + col_gap[x],
+                  y = baseline*legend_sub_plot$rect_h,
                   width = legend_sub_plot$rect_w,
                   height = legend_sub_plot$rect_h,
                   fill = color_this[1],
@@ -169,8 +169,8 @@ getLegRowRectSVG <- function(type, color_theme, col_num, legend_data, legend_sub
     rect <- lapply(1:length(content), function(x) {
     #message(x)
       if (content[x] == 0 | is.na(content[x])) {
-        rect.svg( x = round((x-1)*legend_sub_plot$rect_w + col_gap[x]),
-                  y = round(baseline*legend_sub_plot$rect_h),
+        rect.svg( x = (x-1)*legend_sub_plot$rect_w + col_gap[x],
+                  y = baseline*legend_sub_plot$rect_h,
                   width = legend_sub_plot$rect_w,
                   height = legend_sub_plot$rect_h,
                   fill = config_data$color_config$bg_col,
@@ -183,8 +183,8 @@ getLegRowRectSVG <- function(type, color_theme, col_num, legend_data, legend_sub
           if (length(mut_color) == 0) {
             mut_color <- config_data$color_config$white_col
           }
-          rect.svg( x = round((x-1)*legend_sub_plot$rect_w + col_gap[x]),
-                    y = round(baseline*legend_sub_plot$rect_h),
+          rect.svg( x = (x-1)*legend_sub_plot$rect_w + col_gap[x],
+                    y = baseline*legend_sub_plot$rect_h,
                     width = legend_sub_plot$rect_w,
                     height = legend_sub_plot$rect_h,
                     fill = mut_color,
@@ -196,15 +196,15 @@ getLegRowRectSVG <- function(type, color_theme, col_num, legend_data, legend_sub
           sum_freq <- sum(mut_type$Freq)
           for (m in (1:length(mut_type$Var1))) {
             mut_color <- as.character(mut_colors[which(names(mut_colors) == as.character(mut_type$Var1[m]))])
-            sub_rect[m] <- rect.svg( x = round((x-1)*legend_sub_plot$rect_w + col_gap[x]),
-                                     y = round((baseline+sum(mut_type$Freq[1:m-1])/sum_freq)*legend_sub_plot$rect_h),
+            sub_rect[m] <- rect.svg( x = (x-1)*legend_sub_plot$rect_w + col_gap[x],
+                                     y = (baseline+sum(mut_type$Freq[1:m-1])/sum_freq)*legend_sub_plot$rect_h,
                                      width = legend_sub_plot$rect_w,
                                      height = legend_sub_plot$rect_h*(sum(mut_type$Freq[m])/sum_freq),
                                      fill = mut_color,
                                      stroke = "none")
           }
-          sub_rect[length(mut_type$Var1)+1] <- rect.svg( x = round((x-1)*legend_sub_plot$rect_w + col_gap[x]),
-                                                         y = round(baseline*legend_sub_plot$rect_h),
+          sub_rect[length(mut_type$Var1)+1] <- rect.svg( x = (x-1)*legend_sub_plot$rect_w + col_gap[x],
+                                                         y = baseline*legend_sub_plot$rect_h,
                                                          width = legend_sub_plot$rect_w,
                                                          height = legend_sub_plot$rect_h,
                                                          fill = "none",
@@ -226,32 +226,32 @@ getLegRowRectSVG <- function(type, color_theme, col_num, legend_data, legend_sub
       rect <- lapply(1:length(content), function(x) {
         #message(content[x,k])
         if (content[x] == 0 | is.na(content[x])) {
-          rect.svg( x = round((x-1)*legend_sub_plot$rect_w + col_gap[x]),
-                    y = round(baseline*legend_sub_plot$rect_h),
+          rect.svg( x = (x-1)*legend_sub_plot$rect_w + col_gap[x],
+                    y = baseline*legend_sub_plot$rect_h,
                     width = legend_sub_plot$rect_w,
                     height = legend_sub_plot$rect_h,
                     fill = config_data$color_config$bg_col,
                     stroke = config_data$color_config$white_col,
                     stroke.width = plot_config$stroke_width)
         } else if (content[x] == content_element[1]) {
-          rect.svg( x = round((x-1)*legend_sub_plot$rect_w + col_gap[x]),
-                    y = round(baseline*legend_sub_plot$rect_h),
+          rect.svg( x = (x-1)*legend_sub_plot$rect_w + col_gap[x],
+                    y = baseline*legend_sub_plot$rect_h,
                     width = legend_sub_plot$rect_w,
                     height = legend_sub_plot$rect_h,
                     fill = color_this[1],
                     stroke = config_data$color_config$white_col,
                     stroke.width = plot_config$stroke_width)
         } else if (content[x] == content_element[2]) {
-          rect.svg( x = round((x-1)*legend_sub_plot$rect_w + col_gap[x]),
-                    y = round(baseline*legend_sub_plot$rect_h),
+          rect.svg( x = (x-1)*legend_sub_plot$rect_w + col_gap[x],
+                    y = baseline*legend_sub_plot$rect_h,
                     width = legend_sub_plot$rect_w,
                     height = legend_sub_plot$rect_h,
                     fill = color_this[2],
                     stroke = config_data$color_config$white_col,
                     stroke.width = plot_config$stroke_width)
         } else {
-          rect.svg( x = round((x-1)*legend_sub_plot$rect_w + col_gap[x]),
-                    y = round(baseline*legend_sub_plot$rect_h),
+          rect.svg( x = (x-1)*legend_sub_plot$rect_w + col_gap[x],
+                    y = baseline*legend_sub_plot$rect_h,
                     width = legend_sub_plot$rect_w,
                     height = legend_sub_plot$rect_h,
                     fill = config_data$color_config$white_col,
@@ -266,8 +266,8 @@ getLegRowRectSVG <- function(type, color_theme, col_num, legend_data, legend_sub
     content_element <- content_element[which(content_element != 0 & content_element != "0" & !is.na(content_element))]
     rect <- lapply(1:length(content), function(x) {
       if (content[x] == 0 | is.na(content[x])) {
-        rect.svg( x = round((x-1)*legend_sub_plot$rect_w + col_gap[x]),
-                  y = round(baseline*legend_sub_plot$rect_h),
+        rect.svg( x = (x-1)*legend_sub_plot$rect_w + col_gap[x],
+                  y = baseline*legend_sub_plot$rect_h,
                   width = legend_sub_plot$rect_w,
                   height = legend_sub_plot$rect_h,
                   fill = config_data$color_config$bg_col,
@@ -275,8 +275,8 @@ getLegRowRectSVG <- function(type, color_theme, col_num, legend_data, legend_sub
                   stroke.width = plot_config$stroke_width)
       } else {
         tt <- which(content_element == content[x])
-        rect.svg( x = round((x-1)*legend_sub_plot$rect_w + col_gap[x]),
-                  y = round(baseline*legend_sub_plot$rect_h),
+        rect.svg( x = (x-1)*legend_sub_plot$rect_w + col_gap[x],
+                  y = baseline*legend_sub_plot$rect_h,
                   width = legend_sub_plot$rect_w,
                   height = legend_sub_plot$rect_h,
                   fill = color_this[tt],
@@ -287,8 +287,8 @@ getLegRowRectSVG <- function(type, color_theme, col_num, legend_data, legend_sub
   } else {
     rect <- lapply(1:length(content), function(x) {
       if (content[x] == 0 | is.na(content[x])) {
-        rect.svg( x = round((x-1)*legend_sub_plot$rect_w + col_gap[x]),
-                  y = round(baseline*legend_sub_plot$rect_h),
+        rect.svg( x = (x-1)*legend_sub_plot$rect_w + col_gap[x],
+                  y = baseline*legend_sub_plot$rect_h,
                   width = legend_sub_plot$rect_w,
                   height = legend_sub_plot$rect_h,
                   fill = config_data$color_config$bg_col,
@@ -296,8 +296,8 @@ getLegRowRectSVG <- function(type, color_theme, col_num, legend_data, legend_sub
                   stroke.width = plot_config$stroke_width)
       } else {
         color_this <- config_data$color_config[[match(color_theme, names(config_data$color_config))]][1]
-        rect.svg( x = round((x-1)*legend_sub_plot$rect_w + col_gap[x]),
-                  y = round(baseline*legend_sub_plot$rect_h),
+        rect.svg( x = (x-1)*legend_sub_plot$rect_w + col_gap[x],
+                  y = baseline*legend_sub_plot$rect_h,
                   width = legend_sub_plot$rect_w,
                   height = legend_sub_plot$rect_h,
                   fill = color_this,
@@ -312,9 +312,9 @@ getLegRowRectSVG <- function(type, color_theme, col_num, legend_data, legend_sub
   return(rect_total)
 }
 
-#'
-#' legend appended data
-#'
+#
+# legend appended data
+#
 getRowLegendText <- function(type, color_theme, col_num, legend_data, legend_sub_plot, config_data, plot_config, baseline) {
   colname_info <- type
   #message(colname_info)

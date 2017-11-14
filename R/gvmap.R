@@ -1,48 +1,37 @@
 #'
 #' gvmap package
 #'
-#' @param legend_data a data frame. The basic legend data of the plot
-#' @param heatmap_data a numberic matrix
-#' @param config_file a configuration file
-#'
-#' @param Rowv determines if and how the row dendrogram should be reordered.	By default,
-#' it is TRUE, which implies dendrogram is computed and reordered based on row means.
-#' If NULL or FALSE, then no dendrogram is computed and no reordering is done. If a
-#' dendrogram, then it is used "as-is", ie without any reordering. If a vector of
-#' integers, then dendrogram is computed and reordered based on the order of the vector.
-#' @param Colv determines if and how the column dendrogram should be reordered.	Has the options
-#' as the Rowv argument above and additionally when x is a square matrix, Colv = "Rowv" means
-#' that columns should be treated identically to the rows.
-#' @param distfun function used to compute the distance (dissimilarity) between both rows
-#' and columns. Defaults to dist.
-#' @param hclustfun function used to compute the hierarchical clustering when Rowv or
-#' Colv are not dendrograms. Defaults to hclust.
-#' @param dendrogram character string indicating whether to draw 'none', 'row', 'column' or
-#' 'both' dendrograms. Defaults to 'both'. However, if Rowv (or Colv) is FALSE or NULL
-#' and dendrogram is 'both', then a warning is issued and Rowv (or Colv) arguments are honoured.
-#' @param reorderfun function(d, w) of dendrogram and weights for reordering the row and
-#' column dendrograms. The default uses stats{reorder.dendrogram}
-#' @param symm logical indicating if x should be treated symmetrically; can only be true
-#' when x is a square matrix.
-#' @param revC logical indicating if the column order should be reversed for plotting.
-#' Default (when missing) - is FALSE, unless symm is TRUE.
-#' This is useful for cor matrix.
+#' @param legend_data data frame. The basic legend data of the plot. It will contain all the
+#' sample information. Attention: the row name of the legend data must be the sample name, or
+#' this funciton will NOT run.
+#' @param heatmap_data list, the heatmap data of the sample. The list name of heatmap data must
+#' like this form: heatmap_1, heatmap_2 ... And each heatmap subset must be a martrix, with sample
+#' name being the col name and gene set being the row name.
+#' @param config_file character, the path of your config file. see \link[gvmap]{gvmap-config}
+#' @param output_svg_name character, the output svg file name
+#' @param convert_pdf bool, whether to convert svg file into pdf. Attention: If your svg file is
+#' over 10M, it's better not convert it into pdf. This bug is still being repaired.
+#' @param convert_jpg bool, whether to convert svg file into png.
+#' @param plot_width number, the canvas width of your figure. Default: 1200
+#' @param plot_height number, the canvas height of your figure. Default: 1600
+#' @param stroke_width number, the stroke width of your legend figure. Default: 1
+#' @param dend_stroke_width number, the dendrogram stroke width. Default: 2
+#' @param group_span number, the distance between two groups, such as heatmap_1 and legend_1. Default: 10
+#' @param sample_span number, the distance between sample. Default: 0
+#' @param heatmap_row_span number, the distance between two specific colnames on heatmap. Default: 0
+#' @param frame bool, if TRUE, the legend data has black outline. Otherwise there is no outline. Default: TRUE
+#' @param frame_stroke_width number, the stroke width of the legend frame
+#' @param sample_font_size number, the sample font size
+#' @param legend_font_size number, the legend font size
+#' @param font_family character, the font family of the plot. Default: "Arial"
 #'
 #' @seealso
 #' \link{heatmap}, \link[gplots]{heatmap.2}
 #'
+#' @export
+#'
 #' @examples
-#' legend_data <- "inst/extdata/gvmap.test.txt"
-#' config_file <- "inst/extdata/config.yaml"
-#'
-#' heatmap_data_file_1 <- "inst/extdata/count.txt"
-#' heatmap_data_file_2 <- "inst/extdata/count.1.txt"
-#' heatmap_data <- list(heatmap_1 = heatmap_data_file_1,
-#'                      heatmap_2 = heatmap_data_file_2)
-#'
-#' heatmap_data <- readHeatmapFile(heatmap_data)
-#'
-#' output_svg_name <- "tests/out.svg"
+#' browseVignettes("gvmap")
 #'
 gvmap <- function(legend_data,
                   heatmap_data,
@@ -50,13 +39,13 @@ gvmap <- function(legend_data,
 
                   # output svg name
                   output_svg_name,
-                  convert_pdf = TRUE,
-                  convert_png = FALSE,
+                  convert_pdf = FALSE,
+                  convert_jpg = FALSE,
 
                   # plot for canvas data
                   plot_width = 1200,
                   plot_height = 1600,
-                  stroke_width = 0.5,
+                  stroke_width = 1,
                   dend_stroke_width = 2,
                   group_span = 10,
                   sample_span = 0,
@@ -493,19 +482,24 @@ gvmap <- function(legend_data,
                         y = plot_config$group_baseline[length(plot_config$group_baseline)])
   use_content <- paste(use_content, sample_use, sep = "\n")
 
-  use_content <- group.svg(group.content = use_content, transform.sheet = "translate(20,20)", id = "use")
+  use_content <- group.svg(group.content = use_content, transform.sheet = "translate(20,20)", id = "use",
+                           font.family = plot_config$font_family)
 
   ## =======================
   ## Output the result
   ## =======================
   pack_content <- paste(def_content, use_content, sep = "\n\n")
+  output_svg_name <- normalizePath(output_svg_name)
   pack.svg(pack.content = pack_content, output.svg.name = output_svg_name,
            width = plot_config$plot_width, height = plot_config$plot_out_height)
+
+  # convert
   if (convert_pdf) {
     rsvg_pdf(svg = output_svg_name, file = gsub(".svg$", ".pdf", output_svg_name))
   }
-  if (convert_png) {
-    rsvg_pdf(svg = output_svg_name, file = gsub(".svg$", ".png", output_svg_name))
+  if (convert_jpg) {
+    cmd <- sprintf("convert -density 600 %s %s", output_svg_name, gsub(".svg$", ".png", output_svg_name))
+    system(cmd)
   }
 
 }

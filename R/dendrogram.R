@@ -1,9 +1,9 @@
-#'
-#' dendAttribute
-#' This function is to transfer the dendrogram object info into coordinate
-#' @param dend a dendrogram object
-#' @return x position, y position, and the father node
-#'
+#
+# dendAttribute
+# This function is to transfer the dendrogram object info into coordinate
+# @param dend a dendrogram object
+# @return x position, y position, and the father node
+#
 dendAttribute <- function(dend) {
   # dend %>% unclass %>% str
 
@@ -85,19 +85,15 @@ dendAttribute <- function(dend) {
   return(dend_attr)
 }
 
-#'
-#' is.dendrogram
-#'
+
 is.dendrogram <- function (x) { inherits(x, "dendrogram")  }
 
-#'
-#' reorderfun
-#'
+
 reorderfun <- function(d, w) reorder(d, w)
 
-#'
-#' judge and add gap in heatmap dend
-#'
+#
+# judge and add gap in heatmap dend
+#
 dendGap <- function(dend_attr, gap, w, h, name) {
   if (!anyNA(dend_attr)) {
     aa <- rep(0, length(dend_attr$node_x))

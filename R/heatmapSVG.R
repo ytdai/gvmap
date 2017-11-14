@@ -1,6 +1,6 @@
-#'
-#' dendrogram SVG elements generator
-#'
+#
+# dendrogram SVG elements generator
+#
 dendSVG <- function(dend_attr,
                     id = NULL,
                     plot_config) {
@@ -12,27 +12,26 @@ dendSVG <- function(dend_attr,
   dend_line <- lapply(2:length(dend_attr$node_x), function(x) {
     pos1 <- c(dend_attr$node_x[dend_attr$node_father[x]], dend_attr$node_y[dend_attr$node_father[x]])
     pos2 <- c(dend_attr$node_x[x], dend_attr$node_y[x])
-    line1 <- line.svg(x1 = round(pos1[1]), y1 = round(max(dend_attr$node_y) - pos1[2]),
-                      x2 = round(pos2[1]), y2 = round(max(dend_attr$node_y) - pos1[2]),
-                      stroke.width = plot_config$dend_stroke_width,
+    line1 <- line.svg(x1 = pos1[1], y1 = max(dend_attr$node_y) - pos1[2],
+                      x2 = pos2[1], y2 = max(dend_attr$node_y) - pos1[2],
                       stroke = dend_attr$node_color[x])
-    line2 <- line.svg(x1 = round(pos2[1]), y1 = round(max(dend_attr$node_y) - pos1[2]),
-                      x2 = round(pos2[1]), y2 = round(max(dend_attr$node_y) - pos2[2]),
-                      stroke.width = plot_config$dend_stroke_width,
+    line2 <- line.svg(x1 = pos2[1], y1 = max(dend_attr$node_y) - pos1[2],
+                      x2 = pos2[1], y2 = max(dend_attr$node_y) - pos2[2],
                       stroke = dend_attr$node_color[x])
     return(c(line1, line2))
   })
 
   dend_line_ele <- paste(unlist(dend_line), collapse = "\n")
-  dend_line_ele <- group.svg(id = id, group.content = dend_line_ele)
+  dend_line_ele <- group.svg(id = id, group.content = dend_line_ele,
+                             stroke.width = plot_config$dend_stroke_width)
 
   # pack.svg(output.svg.name = "tests/test.svg", pack.content = dend_line_ele)
   return(dend_line_ele)
 }
 
-#'
-#' calculate row z data
-#'
+#
+# calculate row z data
+#
 heatmapRowZdata <- function(heatmap_data) {
   nr <- dim(heatmap_data)[1]
   nc <- dim(heatmap_data)[2]
@@ -49,9 +48,9 @@ heatmapRowZdata <- function(heatmap_data) {
   return(z_data)
 }
 
-#'
-#' calculate col z data
-#'
+#
+# calculate col z data
+#
 heatmapColZdata <- function(heatmap_data) {
   nr <- dim(heatmap_data)[1]
   nc <- dim(heatmap_data)[2]
@@ -68,10 +67,10 @@ heatmapColZdata <- function(heatmap_data) {
   return(z_data)
 }
 
-#'
-#' heatmap SVG
-#' heatmap plot content SVG element
-#'
+#
+# heatmap SVG
+# heatmap plot content SVG element
+#
 heatmapSVG <- function(heatmap_sub_data, heatmap_sub_info, heatmap_sub_plot,
                        config_data, id) {
   # change value to color
@@ -82,7 +81,7 @@ heatmapSVG <- function(heatmap_sub_data, heatmap_sub_info, heatmap_sub_plot,
   color_list <- colorRampPalette(color_theme)(256)
 
   tag_val <- max(abs(min(heatmap_sub_data)), max(heatmap_sub_data))
-  heatmap_sub_data_col <- round(heatmap_sub_data / tag_val * 128) + 128
+  heatmap_sub_data_col <- heatmap_sub_data / tag_val * 128 + 128
 
   # gap for name
   row_label <- which(!is.na(heatmap_sub_info$row_attr$node_label))
@@ -101,30 +100,30 @@ heatmapSVG <- function(heatmap_sub_data, heatmap_sub_info, heatmap_sub_plot,
 
   heatmap_svg_ele <- lapply(1:nr, function(m) {
     heatmap_svg_gene <- lapply(1:nc, function(n) {
-      rect.svg(x = round(heatmap_sub_plot$rect_w*(n-1) + col_gap[n]),
-               y = round(heatmap_sub_plot$rect_h*(m-1) + row_gap[m]),
+      rect.svg(x = heatmap_sub_plot$rect_w*(n-1) + col_gap[n],
+               y = heatmap_sub_plot$rect_h*(m-1) + row_gap[m],
                width = heatmap_sub_plot$rect_w,
                height = heatmap_sub_plot$rect_h,
-               fill = color_list[heatmap_sub_data_col[m, n]],
-               stroke = "none")
+               fill = color_list[heatmap_sub_data_col[m, n]])
     })
     exp_svg <- paste(unlist(heatmap_svg_gene), collapse = "\n")
-    text_svg <- get.text.svg(x = round(heatmap_sub_plot$w*0.71),
-                             y = round(heatmap_sub_plot$rect_h*m + row_gap[m]),
-                             text.content = rownames(heatmap_sub_data)[m],
-                             font.size = heatmap_sub_plot$row_fz)
+    text_svg <- get.text.svg(x = heatmap_sub_plot$w*0.71,
+                             y = heatmap_sub_plot$rect_h*m + row_gap[m],
+                             text.content = rownames(heatmap_sub_data)[m])
     return(paste(exp_svg, text_svg, sep = "\n"))
   })
   heatmap_svg_ele <- paste(unlist(heatmap_svg_ele), collapse = "\n")
-  heatmap_svg_ele <- group.svg(id = id, group.content = heatmap_svg_ele)
+  heatmap_svg_ele <- group.svg(id = id,
+                               group.content = heatmap_svg_ele,
+                               font.size = heatmap_sub_plot$row_fz)
 
   # pack.svg(output.svg.name = "tests/test.svg", pack.content = heatmap_svg_ele)
   return(heatmap_svg_ele)
 }
 
-#'
-#' heatmap grandient plot
-#'
+#
+# heatmap grandient plot
+#
 heatmapGradSVG <- function(heatmap_sub_data, heatmap_sub_info, heatmap_sub_plot,
                            config_data, id)   {
   # change value to color
@@ -139,14 +138,16 @@ heatmapGradSVG <- function(heatmap_sub_data, heatmap_sub_info, heatmap_sub_plot,
   grad_h <- min(20, heatmap_sub_plot$h * 0.03)
   grad_w <- heatmap_sub_plot$w * 0.10 / 256
   grad_mat <- lapply(1:256, function(x) rect.svg(x = (x-1)*grad_w, y = 0, width = grad_w, height = grad_h,
-                                                 fill = color_list[x], stroke = "none"))
+                                                 fill = color_list[x]))
   grad_mat <- paste(unlist(grad_mat), collapse = "\n")
   grad_box <- rect.svg(x = 0, y = 0, width = heatmap_sub_plot$w * 0.10, height = grad_h,
-                       fill = "none")
+                       fill = "none", stroke = "#000000")
 
+  grad_axis_num <- min(10, heatmap_sub_plot$row_fz * 3)
+  grad_axis_num <- max(grad_axis_num, 4)
   grad_axis <- lim.axis.svg(x = c(-1*tag_val, tag_val), line.length = heatmap_sub_plot$w * 0.10,
-                            axis.font.size = min(10, heatmap_sub_plot$row_fz * 3),
-                            span = min(10, heatmap_sub_plot$row_fz * 3) + 2,
+                            axis.font.size = grad_axis_num,
+                            span = grad_axis_num + 2,
                             id = "axis")
   grad_axis <- group.svg(id = "group_axis", group.content = grad_axis,
                          transform.sheet = paste0("translate(", 0, ",", grad_h ,")"))
@@ -161,9 +162,9 @@ heatmapGradSVG <- function(heatmap_sub_data, heatmap_sub_info, heatmap_sub_plot,
 
 }
 
-#'
-#' Heatmap sample SVG element
-#'
+#
+# Heatmap sample SVG element
+#
 heatmapSampleSVG <- function(heatmap_data, plot_config, id) {
   sample_name <- colnames(heatmap_data)
 

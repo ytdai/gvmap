@@ -15,6 +15,15 @@ LazyData: true
 RoxygenNote: 6.0.1
 Imports:
     rsvg (>= 1.2),
-Suggests: knitr,
+    configr (>= 0.3.1),
+    dendextend (>= 1.6.0),
+    matrixStats (>= 0.52.2),
+    stringr (>=	1.2.0),
+    easySVG (>= 0.1.0)
+Suggests: 
+    knitr,
     rmarkdown
-VignetteBuilder: knitr
+VignetteBuilder: 
+    knitr
+
+

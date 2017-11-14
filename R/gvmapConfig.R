@@ -1,14 +1,14 @@
-#'
-#' Read config file of gvmap
-#'
-#' This function is used to check basic parameter in config file.
-#' If a basic paramter in map_config is missing, the program will stop.
-#' If a basic paramter in color_config is missing, it will use default color theme.
-#' @param config_file the config file you input
-#' @examples
-#' config_file <- "inst/extdata/config.yaml"
-#' gvmap_config <- gvmapConfig(config_file)
-#'
+#
+# Read config file of gvmap
+#
+# This function is used to check basic parameter in config file.
+# If a basic paramter in map_config is missing, the program will stop.
+# If a basic paramter in color_config is missing, it will use default color theme.
+# @param config_file the config file you input
+# @examples
+# config_file <- "inst/extdata/config.yaml"
+# gvmap_config <- gvmapConfig(config_file)
+#
 gvmapConfig <- function(config_file) {
   default_color_theme <- list(
     bg_col = "#EEEEEE",
@@ -64,10 +64,10 @@ gvmapConfig <- function(config_file) {
         hparam <- c(hparam, raw_data = FALSE)
       }
       if (!"kmer_col" %in% names(config_info$map_config[[hid]])) {
-        hparam <- c(hparam, kmer_col = 0)
+        hparam <- c(hparam, kmer_col = 1)
       }
       if (!"kmer_row" %in% names(config_info$map_config[[hid]])) {
-        hparam <- c(hparam, kmer_row = 0)
+        hparam <- c(hparam, kmer_row = 1)
       }
       if (!"split_row_name" %in% names(config_info$map_config[[hid]])) {
         hparam <- c(hparam, list(split_row_name = NULL))
@@ -152,13 +152,13 @@ gvmapConfig <- function(config_file) {
 }
 
 
-#'
-#' read legend data
-#'
-#' @examples
-#' legend_data_file <- "inst/extdata/gvmap.test.txt"
-#' legend_data <- readLegendFile(legend_data_file)
-#'
+#
+# read legend data
+#
+# @examples
+# legend_data_file <- "inst/extdata/gvmap.test.txt"
+# legend_data <- readLegendFile(legend_data_file)
+#
 readLegendFile <- function(legend_data) {
   if (typeof(legend_data) == "character") {
     data_info <- read.table(legend_data, header = T, sep = "\t", quote = '"')
@@ -171,14 +171,14 @@ readLegendFile <- function(legend_data) {
 }
 
 
-#'
-#' read heatmap data
-#'
-#' @examples
-#' heatmap_data_file <- "inst/extdata/count.txt"
-#' heatmap_data_file <- list(heatmap_1 = heatmap_data_file)
-#' heatmap_data <- readHeatmapFile(heatmap_data_file)
-#'
+#
+# read heatmap data
+#
+# @examples
+# heatmap_data_file <- "inst/extdata/count.txt"
+# heatmap_data_file <- list(heatmap_1 = heatmap_data_file)
+# heatmap_data <- readHeatmapFile(heatmap_data_file)
+#
 readHeatmapFile <- function(heatmap_data) {
   if (!is.list(heatmap_data)) {
     stop("[ERROR] The heatmap data must be a list, try heatmap_data <- list(heatmap_1 = heatmap_data)")
