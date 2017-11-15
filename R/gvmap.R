@@ -65,6 +65,7 @@ gvmap <- function(legend_data,
     stop("[ERROR] Config file is required!")
   }
   config_data <- gvmapConfig(config_file)
+  message("[INFO] Read config data completed")
 
   # read legend data
   if (missing(legend_data)) {
@@ -82,6 +83,7 @@ gvmap <- function(legend_data,
     }
     legend_data <- readLegendFile(legend_data)
   }
+  message("[INFO] Read legend data completed")
 
   # read heatmap data
   if (missing(heatmap_data)) {
@@ -99,6 +101,7 @@ gvmap <- function(legend_data,
     }
     heatmap_data <- readHeatmapFile(heatmap_data)
   }
+  message("[INFO] Read heatmap data completed")
 
   if (!heatmap_data_plot & !legend_data_plot) {
     stop("[ERROR] None heatmap or legend, please check your data!")
@@ -149,6 +152,7 @@ gvmap <- function(legend_data,
   if (legend_data_plot) {
     plot_config <- getLegendParam(legend_data, config_data, plot_config)
   }
+  message("[INFO] Generating plot paramters completed")
 
   ## =======================
   ## Data processsing
@@ -315,6 +319,7 @@ gvmap <- function(legend_data,
       }
     }
   }
+  message("[INFO] Preprocessing heatmap data")
 
   if (legend_data_plot) {
     leg_sample <- rownames(legend_data)
@@ -325,6 +330,7 @@ gvmap <- function(legend_data,
     legend_data <- legend_data[leg_idx, ]
     rownames(legend_data) <- plot_config$sample_order
   }
+  message("[INFO] Preprocessing legend data")
 
   # calculate SVG location
   plot_config <- checkPlotConfig(plot_config, config_data)
@@ -363,6 +369,7 @@ gvmap <- function(legend_data,
   ## =======================
   ## Generating SVG element
   ## =======================
+  message("[INFO] Start to generating SVG element")
   def_content <- ""
   if (heatmap_data_plot) {
     for (i in 1:config_data$map_config$heatmap_num) {
@@ -428,6 +435,7 @@ gvmap <- function(legend_data,
   ## =======================
   ## Generating SVG Location
   ## =======================
+  message("[INFO] Start to generating SVG element location")
   use_content <- ""
   kk <- 0
   for (i in 1:length(config_data$map_config$map_order)) {
@@ -488,6 +496,7 @@ gvmap <- function(legend_data,
   ## =======================
   ## Output the result
   ## =======================
+  message("[INFO] Output SVG")
   pack_content <- paste(def_content, use_content, sep = "\n\n")
   output_svg_name <- normalizePath(output_svg_name)
   pack.svg(pack.content = pack_content, output.svg.name = output_svg_name,

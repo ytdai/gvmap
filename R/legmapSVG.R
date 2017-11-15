@@ -17,7 +17,8 @@ sampleSVG <- function(plot_config, gap_info, id) {
                  font.size = plot_config$sample_font_size,
                  rotate = 90)
   })
-  sample_svg <- group.svg( group.content = paste(unlist(sample_svg), sep = "\n"), id = id)
+  sample_svg <- group.svg( group.content = paste(unlist(sample_svg), sep = "\n"), id = id,
+                           font.family = plot_config$font_family)
 
   return(sample_svg)
 }
@@ -95,10 +96,13 @@ legendGroupSVG <- function(config_data, plot_config, legend_data, legend_sub_inf
     split_sample_line <- ""
   }
 
-  group_rect_svg <- group.svg(id = paste0(group_name, "_mat"), group.content = paste(rect, collapse = "\n"))
-  group_legend_svg <- group.svg(id = paste0(group_name, "_leg_text"), group.content = paste(leg_text, collapse = "\n"))
+  group_rect_svg <- group.svg(id = paste0(group_name, "_mat"), group.content = paste(rect, collapse = "\n"),
+                              font.family = plot_config$font_family)
+  group_legend_svg <- group.svg(id = paste0(group_name, "_leg_text"), group.content = paste(leg_text, collapse = "\n"),
+                                font.family = plot_config$font_family)
   group_outline_svg <- group.svg(id = paste0(group_name, "_outline"), group.content = paste(unlist(group_outline), unlist(split_sample_line), collapse = "\n"),
-                                 stroke.width = plot_config$frame_stroke_width, stroke = "#000000")
+                                 stroke.width = plot_config$frame_stroke_width, stroke = "#000000",
+                                 font.family = plot_config$font_family)
 
   group_svg <- paste(group_rect_svg, group_outline_svg, group_legend_svg, sep = "\n")
 
@@ -221,7 +225,7 @@ getLegRowRectSVG <- function(type, color_theme, col_num, legend_data, legend_sub
     content_element <- unique(as.vector(content))
     content_element <- sort(content_element[which(content_element != 0 & content_element != "0" & !is.na(content_element))])
     if (length(content_element) != 2) {
-      stop("don't match binaly element color theme")
+      stop("don't match binary element color theme")
     } else {
       rect <- lapply(1:length(content), function(x) {
         #message(content[x,k])

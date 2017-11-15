@@ -23,7 +23,8 @@ dendSVG <- function(dend_attr,
 
   dend_line_ele <- paste(unlist(dend_line), collapse = "\n")
   dend_line_ele <- group.svg(id = id, group.content = dend_line_ele,
-                             stroke.width = plot_config$dend_stroke_width)
+                             stroke.width = plot_config$dend_stroke_width,
+                             font.family = plot_config$font_family)
 
   # pack.svg(output.svg.name = "tests/test.svg", pack.content = dend_line_ele)
   return(dend_line_ele)
@@ -172,7 +173,7 @@ heatmapSampleSVG <- function(heatmap_data, plot_config, id) {
     get.text.svg(x = (x-0.5)*plot_config$heatmap_col_rect, y = 4, text.content = sample_name[x],
                  font.size = plot_config$heatmap_col_fz, rotate = 90)
   })
-  sample_svg <- group.svg( group.content = paste(unlist(sample_svg), sep = "\n"), id = id)
+  sample_svg <- group.svg( group.content = paste(unlist(sample_svg), sep = "\n"), id = id, font.family = plot_config$font_family)
 
   return(sample_svg)
 }

@@ -79,7 +79,106 @@ gvmap(legend_data = legend_data,
       dend_stroke_width = 1,
       convert_pdf = TRUE)
 
+# test on server
 
+sample_info <- read.table("ball.sampleinfo.txt", sep = "\t", header = T, comment.char = "!")
+mutation_info <- read.table("mutation_matrix.txt", sep = "\t", header = T, comment.char = "!")
+exp_data <- read.csv("datExpAfterSVA1285.csv", header = T)
+
+dim(sample_info)
+dim(mutation_info)
+dim(exp_data)
+
+row.names(exp_data) <- exp_data[, 1]
+exp_data <- exp_data[, -1]
+
+
+filygenes <- function(exp)
+{
+  geninfo <- read.table("geneinfo/geneloc.txt")
+  fil <- geninfo[,1] == "chrY"
+  ygenes <- geninfo[fil,4]
+  fil <- row.names(exp) %in% ygenes
+  exp <- exp[!fil,]
+  return(exp)
+}
+
+filxgenes <- function(exp)
+{
+  geninfo <- read.table("geneinfo/geneloc.txt")
+  fil <- geninfo[,1] == "chrX"
+  ygenes <- geninfo[fil,4]
+  fil <- row.names(exp) %in% ygenes
+  exp <- exp[!fil,]
+  return(exp)
+}
+
+blackgenes <- read.table("heatmap_blackgenes.txt")
+dat.tmp <- exp_data[!row.names(exp_data) %in% blackgenes[,1], ]
+
+fil <- str_detect(row.names(dat.tmp), fixed("."))
+dat.tmp <- dat.tmp[!fil,]
+fil <- str_detect(row.names(dat.tmp), "^MIR|^RN7|^RNA|^SNOR|^LINC|^TRAJ|^RNY")
+dat.tmp <- dat.tmp[!fil,]
+dat.tmp <- filygenes(dat.tmp)
+dat.tmp <- filxgenes(dat.tmp)
+
+exp_data <- dat.tmp
+
+exp_data$gene_var <- gene_var
+
+# ==
+
+library(configr)
+library(dendextend)
+library(matrixStats)
+library(easySVG)
+library(rsvg)
+library(stringr)
+library(gvmap)
+
+sample_info <- read.table("ball.sampleinfo.txt", sep = "\t", header = T, comment.char = "!")
+mutation_info <- read.table("mutation_matrix.txt", sep = "\t", header = T, comment.char = "!")
+exp_data <- read.table("filter_exp_mat.txt", header = T, sep = "\t")
+
+sel_sample <- data.frame(sample = colnames(exp_data))
+
+exp_data <- as.matrix(exp_data)
+gene_var <- rowVars(exp_data)
+
+gene_var_data <- data.frame(index = c(1:length(gene_var)), var = gene_var)
+
+exp_data_sort <- exp_data[gene_var_data$index[order(gene_var_data$var, decreasing = T)], ]
+sig_exp_data <- head(exp_data_sort, floor(length(gene_var)*0.1))
+
+heatmap_data <- list(heatmap_1 = sig_exp_data)
+
+legend_data_1 <- merge(sel_sample, sample_info, by.x = "sample", by.y = "nid", sort = F, all.x = T)
+row.names(legend_data_1) <- legend_data_1$sample
+
+mun_tag <- rep(0, length(mutation_info))
+for (i in 1:length(mutation_info)) {
+  mun_tag[i] <- length(which(mutation_info[, i] == "0"))
+}
+table(mun_tag)
+plot_mut_mat <- mutation_info[, (mun_tag < 1285)]
+
+mut_merge <- merge(sel_sample, plot_mut_mat, by.x = "sample", by.y = 0, sort = F, all.x = T)
+
+
+legend_data <- cbind(legend_data_1, mut_merge)
+
+config_file <- "config.allsample.yaml"
+
+gvmap(legend_data = legend_data,
+      heatmap_data = heatmap_data,
+      config_file = config_file,
+      output_svg_name = "output_all_sample_kmer.svg",
+      stroke_width = 0.1,
+      dend_stroke_width = 1,
+      frame_stroke_width = 1,
+      sample_span = 2,
+      sample_font_size = 0.6)
 
 
 # test ETV6-RUNX1
@@ -353,4 +452,43 @@ exp_gene <- head(exp_data, 50)
 
 write.table(exp_gene, file = "inst/extdata/count.1.txt", sep = "\t", col.names = T, row.names = F, quote = F)
 #############################
+
+
+
+
+# ====================
+sample_info <- read.table("ball.sampleinfo.txt", sep = "\t", header = T, comment.char = "!")
+samples <- sample_info$nid
+mutation_info <- read.table("mutation.txt", sep = "\t" , header = T)
+
+gene_list <- unique(mutation_info$gene)
+mut_mat <- data.frame(matrix(0, nrow = length(samples), ncol = length(gene_list)))
+
+colnames(mut_mat) <- gene_list
+rownames(mut_mat) <- samples
+
+for (i in 1:length(mut_mat)) {
+  gene_name <- gene_list[i]
+  mut_gene <- mutation_info[which(mutation_info$gene == gene_list[i]), ]
+  mut_sam <- unique(mut_gene$sample)
+  for (j in 1:length(mut_sam)) {
+    mm <- mut_gene[which(mut_gene$sample == as.character(mut_sam[j])), ]
+    mm_info <- paste(mm$class, collapse = "/")
+    sam_pos <- which(samples == as.character(mut_sam[j]))
+    mut_mat[sam_pos, i] <- mm_info
+  }
+  if (i %% 100 == 0) {
+    message(i)
+  }
+}
+
+write.table(mut_mat, "mutation_matrix.txt", sep = "\t", col.names = T, row.names = T, quote = F)
+
+mun_tag <- rep(0, length(mut_mat))
+for (i in 1:length(mut_mat)) {
+  mun_tag[i] <- length(which(mut_mat[, i] == "0"))
+}
+
+
+
 

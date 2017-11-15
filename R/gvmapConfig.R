@@ -180,8 +180,12 @@ readLegendFile <- function(legend_data) {
 # heatmap_data <- readHeatmapFile(heatmap_data_file)
 #
 readHeatmapFile <- function(heatmap_data) {
-  if (!is.list(heatmap_data)) {
-    stop("[ERROR] The heatmap data must be a list, try heatmap_data <- list(heatmap_1 = heatmap_data)")
+  if (!is.list(heatmap_data) & !is.matrix(heatmap_data)) {
+    stop("[ERROR] The heatmap data must be a list or martrix")
+  }
+
+  if (is.matrix(heatmap_data)) {
+    heatmap_data <- list(heatmap_1 = heatmap_data)
   }
 
   for (i in 1:length(names(heatmap_data))) {

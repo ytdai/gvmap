@@ -8,6 +8,10 @@ getHeatmapParam <- function(heatmap_data, config_data, plot_config, i) {
   heatmap_subdata <-heatmap_data[[i]]
   heatmap_conf_data <- config_data$map_config[[hid]]
 
+  if (i == 1) {
+    plot_config$kmer_col <- heatmap_conf_data$kmer_col
+  }
+
   nr <- dim(heatmap_subdata)[1]
   nc <- dim(heatmap_subdata)[2]
 
@@ -25,15 +29,17 @@ getHeatmapParam <- function(heatmap_data, config_data, plot_config, i) {
   }
 
   row_fz <- min(10, floor(rect_h))
+  row_fz <- max(2, row_fz)
 
   if (plot_config$sample_span == 0) {
     rect_w <- col_dend_w / plot_config$sample_num
   } else {
-    rect_w <- (col_dend_w - (heatmap_conf_data$kmer_col - 1 + length(config_data$map_config$split_sample)) * plot_config$sample_span) / nc
+    rect_w <- (col_dend_w - (plot_config$kmer_col - 1 + length(config_data$map_config$split_sample)) * plot_config$sample_span) / nc
   }
 
   if (is.null(plot_config$sample_font_size)) {
     col_fz <- min(20, floor(rect_w))
+    col_fz <- max(2, col_fz)
     plot_config$sample_font_size <- col_fz
   } else {
     col_fz <- plot_config$sample_font_size
@@ -107,6 +113,7 @@ getLegendParam <- function(legend_data, config_data, plot_config) {
 
   if (is.null(plot_config$sample_font_size)) {
     col_fz <- min(20, floor(rect_w))
+    col_fz <- max(2, col_fz)
     plot_config$sample_font_size <- col_fz
   } else {
     col_fz <- plot_config$sample_font_size
