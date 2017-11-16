@@ -507,7 +507,7 @@ gvmap <- function(legend_data,
     rsvg_pdf(svg = output_svg_name, file = gsub(".svg$", ".pdf", output_svg_name))
   }
   if (convert_jpg) {
-    cmd <- sprintf("convert -density 600 %s %s", output_svg_name, gsub(".svg$", ".png", output_svg_name))
+    cmd <- sprintf("convert -density 300 %s %s", output_svg_name, gsub(".svg$", ".jpg", output_svg_name))
     system(cmd)
   }
 

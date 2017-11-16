@@ -1,5 +1,5 @@
 ---
-title: "easySVG tutorial"
+title: "gvmap tutorial"
 author: "Dai Yuting"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
