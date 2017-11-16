@@ -2,9 +2,8 @@
 title: "gvmap tutorial"
 author: "Dai Yuting"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{gvmap tutorial}
+  %\VignetteIndexEntry{gvmap}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
