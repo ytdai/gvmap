@@ -11,6 +11,7 @@
 #' @param output_svg_name character, the output svg file name
 #' @param convert_pdf bool, whether to convert svg file into pdf. Attention: If your svg file is
 #' over 10M, it's better not convert it into pdf. This bug is still being repaired.
+#' @param output_group_info bool, output group information of each heatmap and legend
 #' @param convert_jpg bool, whether to convert svg file into png.
 #' @param plot_width number, the canvas width of your figure. Default: 1200
 #' @param plot_height number, the canvas height of your figure. Default: 1600
@@ -41,6 +42,9 @@ gvmap <- function(legend_data,
                   output_svg_name,
                   convert_pdf = FALSE,
                   convert_jpg = FALSE,
+
+                  # output group info
+                  output_group_info = FALSE,
 
                   # plot for canvas data
                   plot_width = 1200,
@@ -335,6 +339,8 @@ gvmap <- function(legend_data,
   # calculate SVG location
   plot_config <- checkPlotConfig(plot_config, config_data)
 
+  group_info <- list()
+
   # transform position of dend
   if (heatmap_data_plot) {
     for (i in 1:config_data$map_config$heatmap_num) {
@@ -361,6 +367,26 @@ gvmap <- function(legend_data,
       if (i == 1) {
         config_data$map_config$heatmap_kmer_gap = col_attr
       }
+
+      # add group kmer tag
+      group_sub_row <- data.frame(row_name = row_attr$node_label,
+                                  gap = row_attr$node_group,
+                                  tag = "g0")
+      iii <- 0
+      gtag <- rep("g0", length(group_sub_row[, 1]))
+      for (ii in 1:length(group_sub_row[, 1])) {
+        if (group_sub_row$gap[ii]) {
+          gtag[ii] <- paste0(group_sub_row$row_name[ii], "\tg", iii)
+          iii <- iii + 1
+        } else {
+          gtag[ii] <- paste0(group_sub_row$row_name[ii], "\tg", iii)
+        }
+      }
+      gtag <- gtag[!is.na(group_sub_row$row_name)]
+      gtag <- list(gtag)
+      names(gtag) <- paste0(heatmap_sub_name, " row group information")
+      group_info <- c(group_info, gtag)
+
     }
   } else {
     config_data$map_config$heatmap_kmer_gap = NULL
@@ -422,6 +448,27 @@ gvmap <- function(legend_data,
       legend_group_svg <- paste(legend_group_svg, collapse = "\n")
       def_content <- paste(def_content, legend_group_svg, sep = "\n")
     }
+  }
+
+  # add sample information
+  if (!is.null(config_data$map_config$heatmap_kmer_gap)) {
+    group_sub_col <- data.frame(col_name = config_data$map_config$heatmap_kmer_gap$node_label,
+                                gap = config_data$map_config$heatmap_kmer_gap$node_group,
+                                tag = "g0")
+    iii <- 0
+    gtag <- rep("g0", length(group_sub_col[, 1]))
+    for (ii in 1:length(group_sub_col[, 1])) {
+      if (group_sub_col$gap[ii]) {
+        iii <- iii + 1
+        gtag[ii] <- paste0(group_sub_col$col_name[ii], "\tg", iii)
+      } else {
+        gtag[ii] <- paste0(group_sub_col$col_name[ii], "\tg", iii)
+      }
+    }
+    gtag <- gtag[!is.na(group_sub_col$col_name)]
+    gtag <- list(gtag)
+    names(gtag) <- "sample group information"
+    group_info <- c(group_info, gtag)
   }
 
   # add sample svg
@@ -497,10 +544,19 @@ gvmap <- function(legend_data,
   ## Output the result
   ## =======================
   message("[INFO] Output SVG")
-  pack_content <- paste(def_content, use_content, sep = "\n\n")
+  pack_content <- paste(def_content, use_content, sep = "\n")
   output_svg_name <- normalizePath(output_svg_name)
   pack.svg(pack.content = pack_content, output.svg.name = output_svg_name,
            width = plot_config$plot_width, height = plot_config$plot_out_height)
+
+  if (output_group_info) {
+    output_group_info_name <- gsub(".svg$", ".group.info.txt", output_svg_name)
+    write("Group info in each heatmap: \n", output_group_info_name)
+    for (i in 1:length(group_info)) {
+      write(paste0("\n", names(group_info)[i]), output_group_info_name, append = TRUE)
+      write(paste0(group_info[[i]], collapse = "\n"), output_group_info_name, append = TRUE)
+    }
+  }
 
   # convert
   if (convert_pdf) {

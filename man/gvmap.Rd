@@ -5,11 +5,11 @@
 \title{gvmap package}
 \usage{
 gvmap(legend_data, heatmap_data, config_file, output_svg_name,
-  convert_pdf = FALSE, convert_jpg = FALSE, plot_width = 1200,
-  plot_height = 1600, stroke_width = 1, dend_stroke_width = 2,
-  group_span = 10, sample_span = 0, heatmap_row_span = 0, frame = TRUE,
-  frame_stroke_width = 2, sample_font_size = NULL,
-  legend_font_size = NULL, font_family = "Arial")
+  convert_pdf = FALSE, convert_jpg = FALSE, output_group_info = FALSE,
+  plot_width = 1200, plot_height = 1600, stroke_width = 1,
+  dend_stroke_width = 2, group_span = 10, sample_span = 0,
+  heatmap_row_span = 0, frame = TRUE, frame_stroke_width = 2,
+  sample_font_size = NULL, legend_font_size = NULL, font_family = "Arial")
 }
 \arguments{
 \item{legend_data}{data frame. The basic legend data of the plot. It will contain all the
@@ -28,6 +28,8 @@ name being the col name and gene set being the row name.}
 over 10M, it's better not convert it into pdf. This bug is still being repaired.}
 
 \item{convert_jpg}{bool, whether to convert svg file into png.}
+
+\item{output_group_info}{bool, output group information of each heatmap and legend}
 
 \item{plot_width}{number, the canvas width of your figure. Default: 1200}
 

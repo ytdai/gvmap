@@ -1,7 +1,7 @@
 Package: gvmap
 Type: Package
 Title: An Improved Function to Plot Heatmap of Genomic Data
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: person("Yuting", "Dai", email = "forlynna@sjtu.edu.cn", role = c("aut", "cre"))
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
@@ -13,9 +13,9 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
-    rsvg (>= 1.1),
-    configr (>= 0.3.1),
-    dendextend (>= 1.6.0),
+    rsvg (>= 1.0),
+    configr (>= 0.3.0),
+    dendextend (>= 1.5.0),
     matrixStats (>= 0.52.2),
     stringr (>=	1.2.0),
     easySVG
