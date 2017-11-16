@@ -4,7 +4,7 @@ author: "Dai Yuting"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{easySVG tutorial}
+  %\VignetteIndexEntry{gvmap 1000 samples}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -12,6 +12,7 @@ vignette: >
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 ```
+
 
 ``` {r echo = TRUE, eval = FALSE}
 
@@ -69,7 +70,7 @@ legend_data <- cbind(legend_data_1, mut_merge)
 config_file <- "/home/dyt/projects/ball/analysis/metarnaseq/comGroup/config.allsample.yaml"
 
 # 输出文件的路径
-output_svg_name <- paste0(output_dir, "/out_allsample_kmer_svg")
+output_svg_name <- paste0(output_dir, "/out_all_sample_kmer_svg")
 
 # 运行gvmap
 gvmap(legend_data = legend_data,

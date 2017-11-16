@@ -4,7 +4,7 @@ author: "Dai Yuting"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{easySVG tutorial}
+  %\VignetteIndexEntry{gvmap tutorial}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
