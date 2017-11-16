@@ -12,17 +12,17 @@ BugReports: https://github.com/ytdai/gvmap/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
 Imports:
-    rsvg (>= 1.2),
+    rsvg (>= 1.1),
     configr (>= 0.3.1),
     dendextend (>= 1.6.0),
     matrixStats (>= 0.52.2),
     stringr (>=	1.2.0),
-    easySVG (>= 0.1.0)
+    easySVG
 Suggests: 
     knitr,
     rmarkdown
+RoxygenNote: 6.0.1
 VignetteBuilder: 
     knitr
 
