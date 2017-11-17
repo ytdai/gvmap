@@ -139,17 +139,19 @@ library(configr)
 library(dendextend)
 library(matrixStats)
 library(easySVG)
-library(rsvg)
+library(rsvg, lib.loc = "/home/dyt/R/x86_64-pc-linux-gnu-library/3.4")
 library(stringr)
-library(gvmap)
+library(gvmap, lib.loc = "/home/dyt/R/x86_64-pc-linux-gnu-library/3.4")
 
 sample_info <- read.table("ball.sampleinfo.txt", sep = "\t", header = T, comment.char = "!")
 mutation_info <- read.table("mutation_matrix.txt", sep = "\t", header = T, comment.char = "!")
 exp_data <- read.table("filter_exp_mat.txt", header = T, sep = "\t")
 
+exp_data <- as.matrix(exp_data)
+
 sel_sample <- data.frame(sample = colnames(exp_data))
 
-exp_data <- as.matrix(exp_data)
+
 gene_var <- rowVars(exp_data)
 
 gene_var_data <- data.frame(index = c(1:length(gene_var)), var = gene_var)
@@ -167,7 +169,18 @@ for (i in 1:length(mutation_info)) {
   mun_tag[i] <- length(which(mutation_info[, i] == "0"))
 }
 table(mun_tag)
-plot_mut_mat <- mutation_info[, (mun_tag < 1285)]
+
+mut_tag_order <- data.frame(idx = 1:length(mun_tag),
+                            num = mun_tag)
+
+mut_tag_order <- mut_tag_order[order(mut_tag_order$num), ]
+mutation_info_order <- mutation_info[, mut_tag_order$idx]
+
+plot_mut_mat <- mutation_info[, mut_tag_order$idx[(mut_tag_order$num < 1311)]]
+
+#plot_mut_mat <- mutation_info[, mut_tag_order$idx[(mut_tag_order$num < 1321) & (mut_tag_order$num >= 1311)]]
+
+#plot_mut_mat <- mutation_info[, mut_tag_order$idx[(mut_tag_order$num < 1323) & (mut_tag_order$num >= 1321)]]
 
 mut_merge <- merge(sel_sample, plot_mut_mat, by.x = "sample", by.y = 0, sort = F, all.x = T)
 
@@ -175,17 +188,86 @@ mut_merge <- merge(sel_sample, plot_mut_mat, by.x = "sample", by.y = 0, sort = F
 legend_data <- cbind(legend_data_1, mut_merge)
 
 config_file <- "config.allsample.yaml"
+config_file <- "config.allsample.mut.yaml"
 
 gvmap(legend_data = legend_data,
       heatmap_data = heatmap_data,
       config_file = config_file,
-      output_svg_name = "output_all_sample_kmer.svg",
+      output_svg_name = "output_all_sample_kmer.1323.svg",
       stroke_width = 0.1,
       dend_stroke_width = 1,
       frame_stroke_width = 1,
       sample_span = 2,
       sample_font_size = 0.6,
-      output_group_info = T)
+      output_group_info = T,
+      convert_jpg = T,
+      plot_height = 2000)
+
+# single group
+
+oo = 4
+
+for (oo in 1:9) {
+  if (oo == 9) {
+    oo = "9.10"
+  }
+
+g1_name <- read.csv(paste0("groupnames/g", oo, ".csv"))
+
+sel_exp_data <- exp_data[, match(g1_name$x, colnames(exp_data))]
+gene_var <- rowVars(sel_exp_data)
+
+gene_var_data <- data.frame(index = c(1:length(gene_var)), var = gene_var)
+
+sel_exp_data_sort <- sel_exp_data[gene_var_data$index[order(gene_var_data$var, decreasing = T)], ]
+sel_sig_exp_data <- head(sel_exp_data_sort, floor(length(gene_var)*0.05))
+
+heatmap_data <- list(heatmap_1 = sel_sig_exp_data)
+
+legend_data_1 <- merge(g1_name, sample_info, by.x = "x", by.y = "nid", sort = F, all.x = T)
+row.names(legend_data_1) <- legend_data_1$sample
+
+#plot_mut_mat <- mutation_info[, mut_tag_order$idx[(mut_tag_order$num < 1321) & (mut_tag_order$num >= 1311)]]
+
+#plot_mut_mat <- mutation_info[, mut_tag_order$idx[(mut_tag_order$num < 1323) & (mut_tag_order$num >= 1321)]]
+
+mut_merge <- merge(g1_name, mutation_info, by.x = "x", by.y = 0, sort = F, all.x = T)
+row.names(mut_merge) <- mut_merge$x
+
+mun_tag <- rep(0, length(mut_merge))
+for (i in 1:length(mut_merge)) {
+  mun_tag[i] <- length(which(mut_merge[, i] == "0"))
+}
+table(mun_tag)
+
+mut_tag_order <- data.frame(idx = 1:length(mun_tag),
+                            num = mun_tag)
+
+mut_tag_order <- mut_tag_order[order(mut_tag_order$num), ]
+mut_merge_order <- mut_merge[, mut_tag_order$idx]
+
+plot_mut_mat <- mut_merge[, mut_tag_order$idx[(mut_tag_order$num < 358)]]
+
+head(plot_mut_mat)
+
+legend_data <- cbind(legend_data_1, mut_merge_order)
+
+config_file <- paste0("groupnames/config.g", oo, ".yaml")
+
+gvmap(legend_data = legend_data,
+      heatmap_data = heatmap_data,
+      config_file = config_file,
+      output_svg_name = paste0("groupnames/figure.0.05.g", oo, ".svg"),
+      stroke_width = 0.5,
+      dend_stroke_width = 1,
+      frame_stroke_width = 1,
+      sample_span = 2,
+      convert_jpg = T)
+
+}
+
+
+
 
 
 # test ETV6-RUNX1
