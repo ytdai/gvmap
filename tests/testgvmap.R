@@ -220,16 +220,12 @@ gene_var <- rowVars(sel_exp_data)
 gene_var_data <- data.frame(index = c(1:length(gene_var)), var = gene_var)
 
 sel_exp_data_sort <- sel_exp_data[gene_var_data$index[order(gene_var_data$var, decreasing = T)], ]
-sel_sig_exp_data <- head(sel_exp_data_sort, floor(length(gene_var)*0.05))
+sel_sig_exp_data <- head(sel_exp_data_sort, floor(length(gene_var)*0.1))
 
 heatmap_data <- list(heatmap_1 = sel_sig_exp_data)
 
 legend_data_1 <- merge(g1_name, sample_info, by.x = "x", by.y = "nid", sort = F, all.x = T)
 row.names(legend_data_1) <- legend_data_1$sample
-
-#plot_mut_mat <- mutation_info[, mut_tag_order$idx[(mut_tag_order$num < 1321) & (mut_tag_order$num >= 1311)]]
-
-#plot_mut_mat <- mutation_info[, mut_tag_order$idx[(mut_tag_order$num < 1323) & (mut_tag_order$num >= 1321)]]
 
 mut_merge <- merge(g1_name, mutation_info, by.x = "x", by.y = 0, sort = F, all.x = T)
 row.names(mut_merge) <- mut_merge$x
@@ -255,14 +251,15 @@ legend_data <- cbind(legend_data_1, mut_merge_order)
 config_file <- paste0("groupnames/config.g", oo, ".yaml")
 
 gvmap(legend_data = legend_data,
-      heatmap_data = heatmap_data,
+      heatmap_data = heatmap_data_ff,
       config_file = config_file,
-      output_svg_name = paste0("groupnames/figure.0.05.g", oo, ".svg"),
+      output_svg_name = paste0("groupnames/figure.ko.k4.g", oo, ".svg"),
       stroke_width = 0.5,
       dend_stroke_width = 1,
       frame_stroke_width = 1,
       sample_span = 2,
-      convert_jpg = T)
+      convert_jpg = T,
+      output_group_info = T)
 
 }
 
