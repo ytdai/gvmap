@@ -5,6 +5,7 @@ library(matrixStats)
 library(easySVG)
 library(rsvg)
 library(stringr)
+library(openxlsx)
 
 file_r <- dir(path = "R/")
 file_p <- paste0("R/", file_r)

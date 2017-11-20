@@ -376,16 +376,17 @@ gvmap <- function(legend_data,
       gtag <- rep("g0", length(group_sub_row[, 1]))
       for (ii in 1:length(group_sub_row[, 1])) {
         if (group_sub_row$gap[ii]) {
-          gtag[ii] <- paste0(group_sub_row$row_name[ii], "\tg", iii)
           iii <- iii + 1
+          gtag[ii] <- paste0("g", iii)
         } else {
-          gtag[ii] <- paste0(group_sub_row$row_name[ii], "\tg", iii)
+          gtag[ii] <- paste0("g", iii)
         }
       }
-      gtag <- gtag[!is.na(group_sub_row$row_name)]
-      gtag <- list(gtag)
-      names(gtag) <- paste0(heatmap_sub_name, " row group information")
-      group_info <- c(group_info, gtag)
+      group_sub_row$tag <- gtag
+      group_sub_row <- group_sub_row[!is.na(group_sub_row$row_name), ]
+      group_sub_row <- list(group_sub_row)
+      names(group_sub_row) <- heatmap_sub_name
+      group_info <- c(group_info, group_sub_row)
 
     }
   } else {
@@ -460,15 +461,16 @@ gvmap <- function(legend_data,
     for (ii in 1:length(group_sub_col[, 1])) {
       if (group_sub_col$gap[ii]) {
         iii <- iii + 1
-        gtag[ii] <- paste0(group_sub_col$col_name[ii], "\tg", iii)
+        gtag[ii] <- paste0("g", iii)
       } else {
-        gtag[ii] <- paste0(group_sub_col$col_name[ii], "\tg", iii)
+        gtag[ii] <- paste0("g", iii)
       }
     }
-    gtag <- gtag[!is.na(group_sub_col$col_name)]
-    gtag <- list(gtag)
-    names(gtag) <- "sample group information"
-    group_info <- c(group_info, gtag)
+    group_sub_col$tag <- gtag
+    group_sub_col <- group_sub_col[!is.na(group_sub_col$col_name), ]
+    group_sub_col <- list(group_sub_col)
+    names(group_sub_col) <- "sample_list"
+    group_info <- c(group_info, group_sub_col)
   }
 
   # add sample svg
@@ -550,12 +552,8 @@ gvmap <- function(legend_data,
            width = plot_config$plot_width, height = plot_config$plot_out_height)
 
   if (output_group_info) {
-    output_group_info_name <- gsub(".svg$", ".group.info.txt", output_svg_name)
-    write("Group info in each heatmap: \n", output_group_info_name)
-    for (i in 1:length(group_info)) {
-      write(paste0("\n", names(group_info)[i]), output_group_info_name, append = TRUE)
-      write(paste0(group_info[[i]], collapse = "\n"), output_group_info_name, append = TRUE)
-    }
+    output_group_info_name <- gsub(".svg$", ".group.info.xlsx", output_svg_name)
+    write.xlsx(group_info, output_group_info_name, colWidths = c(NA, "auto", "auto"))
   }
 
   # convert
