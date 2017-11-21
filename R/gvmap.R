@@ -558,7 +558,9 @@ gvmap <- function(legend_data,
 
   # convert
   if (convert_pdf) {
-    rsvg_pdf(svg = output_svg_name, file = gsub(".svg$", ".pdf", output_svg_name))
+    cmd = sprintf("inkscape --without-gui --export-pdf=\"%s\" %s", gsub(".svg$", ".pdf", output_svg_name), output_svg_name)
+    system(cmd)
+    #rsvg_pdf(svg = output_svg_name, file = gsub(".svg$", ".pdf", output_svg_name))
   }
   if (convert_jpg) {
     cmd <- sprintf("convert -density 300 %s %s", output_svg_name, gsub(".svg$", ".jpg", output_svg_name))
