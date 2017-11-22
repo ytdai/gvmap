@@ -44,7 +44,7 @@ devtools::install_github("ytdai/gvmap")
 ## Zip/Tarball
 
 1. Download the appropriate zip file or tar.gz file from Github
-2. Unzip the file and change directories into the easySVG directory
+2. Unzip the file and change directories into the gvmap directory
 3. Run `R CMD INSTALL pkg`
 
 
@@ -52,19 +52,19 @@ devtools::install_github("ytdai/gvmap")
 
 Run by default paramter
 
-![](https://github.com/ytdai/gvmap/tree/master/vignettes/o1.svg)
+![example.1.svg](https://github.com/ytdai/gvmap/tree/master/vignettes/o1.svg)
 
 Only one heatmap
 
-![](https://github.com/ytdai/gvmap/tree/master/vignettes/o2.svg)
+![example.2.svg](https://github.com/ytdai/gvmap/tree/master/vignettes/o2.svg)
 
 Only legend
 
-![](https://github.com/ytdai/gvmap/tree/master/vignettes/o3.svg)
+![example.3.svg](https://github.com/ytdai/gvmap/tree/master/vignettes/o3.svg)
 
 Add sample span and heatmap span
 
-![](https://github.com/ytdai/gvmap/tree/master/vignettes/o4.svg)
+![example.4.svg](https://github.com/ytdai/gvmap/tree/master/vignettes/o4.svg)
 
 
 
