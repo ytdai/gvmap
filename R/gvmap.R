@@ -223,7 +223,7 @@ gvmap <- function(legend_data,
                                          col = color_theme,
                                          groupLabels=TRUE)
     }
-    if(is.dendrogram(Colv) & !is.null(config_data$map_config$heatmap_1$kmer_col > 1)) {
+    if(is.dendrogram(Colv) & config_data$map_config$heatmap_1$kmer_col > 1) {
       color_theme <- config_data$map_config$heatmap_1$kmer_col_color
       if (!is.null(color_theme)) {
         col_idx <- which(names(config_data$color_config) == color_theme)
@@ -526,9 +526,11 @@ gvmap <- function(legend_data,
                                 x = plot_config$plot_width * 0.2,
                                 y = plot_config$group_baseline[i])
       legend_app_use <- use.svg(id = paste0(order_name, "_leg_text"),
-                                x = plot_config$plot_width * 0.05,
+                                x = plot_config$plot_width * 0.02,
                                 y = plot_config$group_baseline[length(plot_config$group_baseline)] + kk + plot_config$sample_font_size*10)
-      kk <- kk + legend_sub_plot$rect_h * length(legend_sub_info)
+      legend_control <- max(8, legend_sub_plot$row_fz)
+      legend_control <- min(14, legend_control)
+      kk <- kk + (legend_control+4) * length(legend_sub_info)
       use_content <- paste(use_content, legend_mat_use, legend_out_use, legend_app_use, sep = "\n")
     }
   }
@@ -547,9 +549,9 @@ gvmap <- function(legend_data,
   ## =======================
   message("[INFO] Output SVG")
   pack_content <- paste(def_content, use_content, sep = "\n")
-  output_svg_name <- normalizePath(output_svg_name)
   pack.svg(pack.content = pack_content, output.svg.name = output_svg_name,
            width = plot_config$plot_width, height = plot_config$plot_out_height)
+  output_svg_name <- normalizePath(output_svg_name)
 
   if (output_group_info) {
     output_group_info_name <- gsub(".svg$", ".group.info.xlsx", output_svg_name)
@@ -558,9 +560,12 @@ gvmap <- function(legend_data,
 
   # convert
   if (convert_pdf) {
-    cmd = sprintf("inkscape --without-gui --export-pdf=\"%s\" %s", gsub(".svg$", ".pdf", output_svg_name), output_svg_name)
-    system(cmd)
-    #rsvg_pdf(svg = output_svg_name, file = gsub(".svg$", ".pdf", output_svg_name))
+    if (file.size(output_svg_name) > 10000000) {
+      cmd = sprintf("inkscape --without-gui --export-pdf=\"%s\" %s", gsub(".svg$", ".pdf", output_svg_name), output_svg_name)
+      system(cmd)
+    } else {
+      rsvg_pdf(svg = output_svg_name, file = gsub(".svg$", ".pdf", output_svg_name))
+    }
   }
   if (convert_jpg) {
     cmd <- sprintf("convert -density 300 %s %s", output_svg_name, gsub(".svg$", ".jpg", output_svg_name))

@@ -51,10 +51,8 @@
 #' [param] tag_col target color theme, other user-define color theme must be like tag_my_theme.
 #' [param] tag_col target color theme, other user-define color theme must be like tag_my_theme.
 #'
+#' @import rsvg configr dendextend matrixStats stringr easySVG
 #'
-showConfig <- function(...) {
-
-}
-
+NULL
 
 

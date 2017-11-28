@@ -33,10 +33,20 @@ gvmapConfig <- function(config_file) {
     gv_bar_col = "#E6AB02",
     gv_dot_col = "#000000"
   )
-  if (is.yaml.file(config_file)) {
-    config_info <- read.config(config_file)
+
+  if (is.character(config_file)) {
+    if (is.yaml.file(config_file)) {
+      config_info <- read.config(config_file)
+    } else {
+      stop("[ERROR] must input a right config file of YAML format or list format")
+      stop("[ERROR] see ?gvmap to get more information")
+    }
+  } else if (is.list(config_file)) {
+    message("[INFO] You have input a list config file")
+    config_info <- config_file
   } else {
-    stop("must input a right config file of YAML format")
+    stop("[ERROR] must input a right config file of YAML format or list format")
+    stop("[ERROR] see ?gvmap to get more information")
   }
 
   if (!"map_config" %in% names(config_info)) {

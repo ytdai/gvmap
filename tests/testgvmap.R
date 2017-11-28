@@ -35,7 +35,8 @@ gvmap(legend_data = legend_data,
       output_svg_name = "tests/o1.svg",
       sample_span = 20,
       heatmap_row_span = 10,
-      output_group_info = T)
+      output_group_info = T,
+      convert_pdf = T)
 
 rsvg_pdf(svg = "tests/g3.min.svg", file = "tests/g3.min.pdf")
 

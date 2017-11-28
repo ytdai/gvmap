@@ -3,8 +3,8 @@ map_config:
   legend_num: 2
   heatmap_1:
     raw_data: FALSE
-    kmer_col: 3
-    kmer_row: 4
+    kmer_col: 1
+    kmer_row: 
     split_row_name: NULL
     percentage: 0.4
     kmer_col_color: NULL

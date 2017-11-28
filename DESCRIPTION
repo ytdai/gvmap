@@ -1,7 +1,7 @@
 Package: gvmap
 Type: Package
 Title: An Improved Function to Plot Heatmap of Genomic Data
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: person("Yuting", "Dai", email = "forlynna@sjtu.edu.cn", role = c("aut", "cre"))
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.

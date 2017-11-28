@@ -324,21 +324,23 @@ getRowLegendText <- function(type, color_theme, col_num, legend_data, legend_sub
   #message(colname_info)
   content <- as.vector(legend_data[, col_num])
 
-  legend_control <- min(8, legend_sub_plot$row_fz)
+  legend_control <- max(8, legend_sub_plot$row_fz)
+  legend_control <- min(14, legend_control)
+  legend_control_r <- legend_control + 4
 
-  title <- get.text.svg(x = 0, y = baseline * legend_sub_plot$rect_h + legend_control,
+  title <- get.text.svg(x = 0, y = baseline * legend_control_r + legend_control,
                         text.content = colname_info, font.size = legend_control + 2,
                         font.weight = "bold")
-  title_app <- legend_sub_plot$w * 0.12
-  rect_app <- legend_sub_plot$w * 0.1
+  title_app <- legend_sub_plot$w * 0.15
+  rect_app <- legend_sub_plot$w * 0.15
   rect_gap <- 3
 
   if (grepl("^bg_", color_theme)) {
-    basic_info <- paste(rect.svg(x = 0 + title_app, y = baseline * legend_sub_plot$rect_h,
+    basic_info <- paste(rect.svg(x = 0 + title_app, y = baseline * legend_control_r,
                                  width = legend_control, height = legend_control,
                                  fill = config_data$color_config$bg_col, stroke.width = 0),
                         get.text.svg( x = 0 + title_app + legend_control + rect_gap,
-                                      y = baseline * legend_sub_plot$rect_h + legend_control,
+                                      y = baseline * legend_control_r + legend_control,
                                       text.content = content[1,1], font.size = legend_control),
                         sep = "\n")
   } else if (grepl("^tag_", color_theme)) {
@@ -347,11 +349,11 @@ getRowLegendText <- function(type, color_theme, col_num, legend_data, legend_sub
     content_element <- sort(unique(as.vector(content)))
     content_element <- content_element[which(content_element != 0 & content_element != "0" & !is.na(content_element))]
     if (length(content_element) > 0) {
-      basic_info <- paste(rect.svg(x = 0 + title_app, y = baseline * legend_sub_plot$rect_h,
+      basic_info <- paste(rect.svg(x = 0 + title_app, y = baseline * legend_control_r,
                                    width = legend_control, height = legend_control,
                                    fill = color_this[1], stroke.width = 0),
                           get.text.svg( x = 0 + title_app + legend_control + rect_gap,
-                                        y = baseline * legend_sub_plot$rect_h + legend_control,
+                                        y = baseline * legend_control_r + legend_control,
                                         text.content = content_element[1], font.size = legend_control),
                           sep = "\n")
     } else {
@@ -371,11 +373,11 @@ getRowLegendText <- function(type, color_theme, col_num, legend_data, legend_sub
       mut_name <- content_element[x]
       mut_color <- as.character(mut_colors[which(names(mut_colors) == as.character(mut_name))])
       paste(rect.svg(x = 0 + title_app + (x-1)*rect_app,
-                     y = baseline * legend_sub_plot$rect_h,
+                     y = baseline * legend_control_r,
                      width = legend_control, height = legend_control,
                      fill = mut_color, stroke.width = 0),
             get.text.svg( x = 0 + title_app + (x-1)*rect_app + legend_control + rect_gap,
-                          y = baseline * legend_sub_plot$rect_h + legend_control,
+                          y = baseline * legend_control_r + legend_control,
                           text.content = mut_name, font.size = legend_control),
             sep = "\n")
     })
@@ -391,11 +393,11 @@ getRowLegendText <- function(type, color_theme, col_num, legend_data, legend_sub
     if (length(content_element) > 0) {
     basic_info <- lapply(1:2, function(x) {
       paste(rect.svg(x = 0 + title_app + (x-1)*rect_app,
-                     y = baseline * legend_sub_plot$rect_h,
+                     y = baseline * legend_control_r,
                      width = legend_control, height = legend_control,
                      fill = color_this[x], stroke.width = 0),
             get.text.svg( x = 0 + title_app + (x-1)*rect_app + legend_control + rect_gap,
-                          y = baseline * legend_sub_plot$rect_h + legend_control,
+                          y = baseline * legend_control_r + legend_control,
                           text.content = content_element[x], font.size = legend_control),
             sep = "\n")
     })
@@ -404,6 +406,7 @@ getRowLegendText <- function(type, color_theme, col_num, legend_data, legend_sub
       basic_info <- ""
     }
   } else if (grepl("^pool_", color_theme)) {
+
     color_this <- config_data$color_config[[match(color_theme, names(config_data$color_config))]]
     content_element <- sort(unique(as.vector(content)))
     content_element <- content_element[which(content_element != 0 & content_element != "0" & !is.na(content_element))]
@@ -411,33 +414,34 @@ getRowLegendText <- function(type, color_theme, col_num, legend_data, legend_sub
     if (length(content_element) <= 8 & length(content_element) > 0) {
       basic_info <- lapply(1:length(content_element), function(x) {
         paste(rect.svg(x = 0 + title_app + (x-1)*rect_app,
-                       y = baseline * legend_sub_plot$rect_h,
+                       y = baseline * legend_control_r,
                        width = legend_control, height = legend_control,
                        fill = color_this[x], stroke.width = 0),
               get.text.svg( x = 0 + title_app + (x-1)*rect_app + legend_control + rect_gap,
-                            y = baseline * legend_sub_plot$rect_h + legend_control,
+                            y = baseline * legend_control_r + legend_control,
                             text.content = content_element[x], font.size = legend_control),
               sep = "\n")
       })
       basic_info <- paste(unlist(basic_info), collapse = "\n")
     } else if (length(content_element) > 8) {
+      legend_control <- round(legend_control / 2)
       basic_info_1 <- lapply(1:8, function(x) {
         paste(rect.svg(x = 0 + title_app + (x-1)*rect_app,
-                       y = baseline * legend_sub_plot$rect_h,
+                       y = baseline * legend_control_r,
                        width = legend_control, height = legend_control,
                        fill = color_this[x], stroke.width = 0),
               get.text.svg( x = 0 + title_app + (x-1)*rect_app + legend_control + rect_gap,
-                            y = baseline * legend_sub_plot$rect_h + legend_control,
+                            y = baseline * legend_control_r + legend_control,
                             text.content = content_element[x], font.size = legend_control),
               sep = "\n")
       })
       basic_info_2 <- lapply(9:length(content_element), function(x) {
         paste(rect.svg(x = 0 + title_app + (x-9)*rect_app,
-                       y = baseline * legend_sub_plot$rect_h + legend_control + 2,
+                       y = baseline * legend_control_r + legend_control + 2,
                        width = legend_control, height = legend_control,
                        fill = color_this[x], stroke.width = 0),
               get.text.svg( x = 0 + title_app + (x-9)*rect_app + legend_control + rect_gap,
-                            y = baseline * legend_sub_plot$rect_h + legend_control + legend_control + 2,
+                            y = baseline * legend_control_r + legend_control + legend_control + 2,
                             text.content = content_element[x], font.size = legend_control),
               sep = "\n")
       })
@@ -453,11 +457,11 @@ getRowLegendText <- function(type, color_theme, col_num, legend_data, legend_sub
     content_element <- content_element[which(content_element != 0 & content_element != "0" & !is.na(content_element))]
 
     if (length(content_element) > 8) {
-    basic_info <- paste(rect.svg(x = 0 + title_app, y = baseline * legend_sub_plot$rect_h,
+    basic_info <- paste(rect.svg(x = 0 + title_app, y = baseline * legend_control_r,
                                  width = legend_control, height = legend_control,
                                  fill = color_this[1], stroke.width = 0),
                         get.text.svg( x = 0 + title_app + legend_control + rect_gap,
-                                      y = baseline * legend_sub_plot$rect_h + legend_control,
+                                      y = baseline * legend_control_r + legend_control,
                                       text.content = content_element[1], font.size = legend_control),
                         sep = "\n")
     basic_info <- paste(unlist(basic_info), collapse = "\n")
