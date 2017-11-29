@@ -11,11 +11,11 @@
 #' @return a config file to run gvmap
 #' @examples
 #' heatmap_info <- list("heatmap_1", "heatmap_2", "heatmap_3")
-#' legend_info <- data.frame(legend_group = c("lg1", "lg1", "lg2"),
+#' legend_info <- data.frame(legend_group = c("legend_1", "legend_1", "legend_2"),
 #'                           name = c("Age", "Gender", "NRAS"),
 #'                           col_theme = c("binary_col", "binary_col", "tag_col"),
 #'                           column_num = c(2, 3, 4))
-#' config_info <- gvmapAutoConfig(heatmap_info = heatmap_info,
+#' config_file <- gvmapAutoConfig(heatmap_info = heatmap_info,
 #'                                legend_info = legend_info)
 #'
 #'
@@ -27,9 +27,12 @@ gvmapAutoConfig <- function(heatmap_info,
 
   if (missing(heatmap_info)) {
     message("[INFO] heatmap_info is missing, the heatmap will not plot")
+    heatmap_num <- 0
+    map_config <- c(heatmap_num = 0)
   } else {
     if (is.list(heatmap_info)) {
       heatmap_num <- length(heatmap_info)
+      # map_heatmap_info <- list(rep(NULL, heatmap_num))
       names(heatmap_info) <- paste0("heatmap_", 1:heatmap_num)
       map_config <- c(heatmap_num = heatmap_num,
                       heatmap_info)
@@ -40,6 +43,8 @@ gvmapAutoConfig <- function(heatmap_info,
 
   if (missing(legend_info)) {
     message("[INFO] legend_info is missing, the legend will not plot")
+    legend_num <- 0
+    map_config <- c(map_config, legend_num = 0)
   } else {
     if (is.data.frame(legend_info)) {
       legend_num <- length(unique(legend_info[, 1]))
@@ -65,4 +70,6 @@ gvmapAutoConfig <- function(heatmap_info,
 
   config_file <- list(map_config = map_config)
   config_file <- gvmapConfig(config_file)
+
+  return(config_file)
 }

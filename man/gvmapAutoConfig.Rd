@@ -21,11 +21,11 @@ Generating gvmap config file automaticly
 }
 \examples{
 heatmap_info <- list("heatmap_1", "heatmap_2", "heatmap_3")
-legend_info <- data.frame(legend_group = c("lg1", "lg1", "lg2"),
+legend_info <- data.frame(legend_group = c("legend_1", "legend_1", "legend_2"),
                           name = c("Age", "Gender", "NRAS"),
                           col_theme = c("binary_col", "binary_col", "tag_col"),
                           column_num = c(2, 3, 4))
-config_info <- gvmapAutoConfig(heatmap_info = heatmap_info,
+config_file <- gvmapAutoConfig(heatmap_info = heatmap_info,
                                legend_info = legend_info)
 
 

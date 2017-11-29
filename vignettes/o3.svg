@@ -63,32 +63,32 @@
 <rect x="0" y="0" width="560" height="246.857142857143"   style="fill:none;"/> <line x1="336" y1="0" x2="336" y2="246.857142857143" /></g>
 
 <g id="legend_1_leg_text" style="font-family:Arial;" >
-<text x="0" y="8" style="font-size:10;font-weight:bold;" >Gender</text>
-<rect x="67.2" y="0" width="8" height="8"   style="fill:#196ABD;stroke-width:0;"/>
-<text x="78.2" y="8" style="font-size:8;" >Female</text>
-<rect x="123.2" y="0" width="8" height="8"   style="fill:#C20B01;stroke-width:0;"/>
-<text x="134.2" y="8" style="font-size:8;" >Male</text>
-<text x="0" y="69.7142857142857" style="font-size:10;font-weight:bold;" >Age</text>
-<rect x="67.2" y="61.7142857142857" width="8" height="8"   style="fill:#196ABD;stroke-width:0;"/>
-<text x="78.2" y="69.7142857142857" style="font-size:8;" >Adult</text>
-<rect x="123.2" y="61.7142857142857" width="8" height="8"   style="fill:#C20B01;stroke-width:0;"/>
-<text x="134.2" y="69.7142857142857" style="font-size:8;" >Child</text>
-<text x="0" y="131.428571428571" style="font-size:10;font-weight:bold;" >Fusion</text>
-<rect x="67.2" y="123.428571428571" width="8" height="8"   style="fill:#696969;stroke-width:0;"/>
-<text x="78.2" y="131.428571428571" style="font-size:8;" >ETV6-RUNX1</text>
-<text x="0" y="193.142857142857" style="font-size:10;font-weight:bold;" >other_fusion</text>
-<rect x="67.2" y="185.142857142857" width="8" height="8"   style="fill:#1B9E77;stroke-width:0;"/>
-<text x="78.2" y="193.142857142857" style="font-size:8;" >ERG-FUS</text>
-<rect x="123.2" y="185.142857142857" width="8" height="8"   style="fill:#D95F02;stroke-width:0;"/>
-<text x="134.2" y="193.142857142857" style="font-size:8;" >ETV6-BORCS5</text>
-<rect x="179.2" y="185.142857142857" width="8" height="8"   style="fill:#7570B3;stroke-width:0;"/>
-<text x="190.2" y="193.142857142857" style="font-size:8;" >ETV6-NID1</text>
-<rect x="235.2" y="185.142857142857" width="8" height="8"   style="fill:#E7298A;stroke-width:0;"/>
-<text x="246.2" y="193.142857142857" style="font-size:8;" >ETV6-PMEL</text>
-<rect x="291.2" y="185.142857142857" width="8" height="8"   style="fill:#66A61E;stroke-width:0;"/>
-<text x="302.2" y="193.142857142857" style="font-size:8;" >RUNX1-UGGT2</text>
-<rect x="347.2" y="185.142857142857" width="8" height="8"   style="fill:#E6AB02;stroke-width:0;"/>
-<text x="358.2" y="193.142857142857" style="font-size:8;" >ZZZ3-AK5</text></g>
+<text x="0" y="14" style="font-size:16;font-weight:bold;" >Gender</text>
+<rect x="84" y="0" width="14" height="14"   style="fill:#196ABD;stroke-width:0;"/>
+<text x="101" y="14" style="font-size:14;" >Female</text>
+<rect x="168" y="0" width="14" height="14"   style="fill:#C20B01;stroke-width:0;"/>
+<text x="185" y="14" style="font-size:14;" >Male</text>
+<text x="0" y="32" style="font-size:16;font-weight:bold;" >Age</text>
+<rect x="84" y="18" width="14" height="14"   style="fill:#196ABD;stroke-width:0;"/>
+<text x="101" y="32" style="font-size:14;" >Adult</text>
+<rect x="168" y="18" width="14" height="14"   style="fill:#C20B01;stroke-width:0;"/>
+<text x="185" y="32" style="font-size:14;" >Child</text>
+<text x="0" y="50" style="font-size:16;font-weight:bold;" >Fusion</text>
+<rect x="84" y="36" width="14" height="14"   style="fill:#696969;stroke-width:0;"/>
+<text x="101" y="50" style="font-size:14;" >ETV6-RUNX1</text>
+<text x="0" y="68" style="font-size:16;font-weight:bold;" >other_fusion</text>
+<rect x="84" y="54" width="14" height="14"   style="fill:#1B9E77;stroke-width:0;"/>
+<text x="101" y="68" style="font-size:14;" >ERG-FUS</text>
+<rect x="168" y="54" width="14" height="14"   style="fill:#D95F02;stroke-width:0;"/>
+<text x="185" y="68" style="font-size:14;" >ETV6-BORCS5</text>
+<rect x="252" y="54" width="14" height="14"   style="fill:#7570B3;stroke-width:0;"/>
+<text x="269" y="68" style="font-size:14;" >ETV6-NID1</text>
+<rect x="336" y="54" width="14" height="14"   style="fill:#E7298A;stroke-width:0;"/>
+<text x="353" y="68" style="font-size:14;" >ETV6-PMEL</text>
+<rect x="420" y="54" width="14" height="14"   style="fill:#66A61E;stroke-width:0;"/>
+<text x="437" y="68" style="font-size:14;" >RUNX1-UGGT2</text>
+<rect x="504" y="54" width="14" height="14"   style="fill:#E6AB02;stroke-width:0;"/>
+<text x="521" y="68" style="font-size:14;" >ZZZ3-AK5</text></g>
 
 <g id="legend_2_mat" style="font-family:Arial;" >
 <rect x="0" y="0" width="56" height="61.7142857142857"   style="fill:#3987CC;stroke:#FFFFFF;stroke-width:1;"/>
@@ -137,23 +137,23 @@
 <rect x="0" y="0" width="560" height="185.142857142857"   style="fill:none;"/> <line x1="336" y1="0" x2="336" y2="185.142857142857" /></g>
 
 <g id="legend_2_leg_text" style="font-family:Arial;" >
-<text x="0" y="8" style="font-size:10;font-weight:bold;" >KRAS</text>
-<rect x="67.2" y="0" width="8" height="8"   style="fill:#DB3D3D;stroke-width:0;"/>
-<text x="78.2" y="8" style="font-size:8;" >frameshift</text>
-<rect x="123.2" y="0" width="8" height="8"   style="fill:#3987CC;stroke-width:0;"/>
-<text x="134.2" y="8" style="font-size:8;" >missense</text>
-<rect x="179.2" y="0" width="8" height="8"   style="fill:#FF7F0E;stroke-width:0;"/>
-<text x="190.2" y="8" style="font-size:8;" >nonsense</text>
-<text x="0" y="69.7142857142857" style="font-size:10;font-weight:bold;" >P53</text>
-<rect x="67.2" y="61.7142857142857" width="8" height="8"   style="fill:#DB3D3D;stroke-width:0;"/>
-<text x="78.2" y="69.7142857142857" style="font-size:8;" >frameshift</text>
-<rect x="123.2" y="61.7142857142857" width="8" height="8"   style="fill:#3987CC;stroke-width:0;"/>
-<text x="134.2" y="69.7142857142857" style="font-size:8;" >missense</text>
-<text x="0" y="131.428571428571" style="font-size:10;font-weight:bold;" >NRAS</text>
-<rect x="67.2" y="123.428571428571" width="8" height="8"   style="fill:#DB3D3D;stroke-width:0;"/>
-<text x="78.2" y="131.428571428571" style="font-size:8;" >frameshift</text>
-<rect x="123.2" y="123.428571428571" width="8" height="8"   style="fill:#3987CC;stroke-width:0;"/>
-<text x="134.2" y="131.428571428571" style="font-size:8;" >missense</text></g>
+<text x="0" y="14" style="font-size:16;font-weight:bold;" >KRAS</text>
+<rect x="84" y="0" width="14" height="14"   style="fill:#DB3D3D;stroke-width:0;"/>
+<text x="101" y="14" style="font-size:14;" >frameshift</text>
+<rect x="168" y="0" width="14" height="14"   style="fill:#3987CC;stroke-width:0;"/>
+<text x="185" y="14" style="font-size:14;" >missense</text>
+<rect x="252" y="0" width="14" height="14"   style="fill:#FF7F0E;stroke-width:0;"/>
+<text x="269" y="14" style="font-size:14;" >nonsense</text>
+<text x="0" y="32" style="font-size:16;font-weight:bold;" >P53</text>
+<rect x="84" y="18" width="14" height="14"   style="fill:#DB3D3D;stroke-width:0;"/>
+<text x="101" y="32" style="font-size:14;" >frameshift</text>
+<rect x="168" y="18" width="14" height="14"   style="fill:#3987CC;stroke-width:0;"/>
+<text x="185" y="32" style="font-size:14;" >missense</text>
+<text x="0" y="50" style="font-size:16;font-weight:bold;" >NRAS</text>
+<rect x="84" y="36" width="14" height="14"   style="fill:#DB3D3D;stroke-width:0;"/>
+<text x="101" y="50" style="font-size:14;" >frameshift</text>
+<rect x="168" y="36" width="14" height="14"   style="fill:#3987CC;stroke-width:0;"/>
+<text x="185" y="50" style="font-size:14;" >missense</text></g>
 
 <g id="sample_list" style="font-family:Arial;" >
 <text x="28" y="0" style="font-size:20;" transform="rotate(90,28,0) ">M1001</text>
@@ -169,15 +169,14 @@
 </defs>
 
 
-
 <g id="use" style="font-family:Arial;" transform="translate(20,20)">
 
 <use xlink:href="#legend_1_mat" x="160" y="0"  />
 <use xlink:href="#legend_1_outline" x="160" y="0"  />
-<use xlink:href="#legend_1_leg_text" x="40" y="652"  />
+<use xlink:href="#legend_1_leg_text" x="16" y="652"  />
 <use xlink:href="#legend_2_mat" x="160" y="256.857142857143"  />
 <use xlink:href="#legend_2_outline" x="160" y="256.857142857143"  />
-<use xlink:href="#legend_2_leg_text" x="40" y="898.857142857143"  />
+<use xlink:href="#legend_2_leg_text" x="16" y="724"  />
 <use xlink:href="#sample_list" x="160" y="452"  /></g>
 
 

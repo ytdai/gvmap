@@ -18,6 +18,8 @@ Imports:
     dendextend (>= 1.5.0),
     matrixStats (>= 0.52.2),
     stringr (>=	1.2.0),
+    openxlsx,
+    stats,
     easySVG
 Suggests: 
     knitr,

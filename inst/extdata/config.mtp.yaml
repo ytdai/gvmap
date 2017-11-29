@@ -4,7 +4,7 @@ map_config:
   heatmap_1:
     raw_data: FALSE
     kmer_col: 1
-    kmer_row: 
+    kmer_row: 1
     split_row_name: NULL
     percentage: 0.4
     kmer_col_color: NULL

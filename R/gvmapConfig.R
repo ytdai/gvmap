@@ -109,19 +109,23 @@ gvmapConfig <- function(config_file) {
       if (!"distfun" %in% names(config_info$map_config[[hid]])) {
         hparam <- c(hparam, distfun = dist)
       } else {
-        if (config_info$map_config[[hid]]$distfun == "sih") {
-          config_info$map_config[[hid]]$distfun <- function(x) as.dist((1-cor(t(x)))/2)
-        } else {
-          config_info$map_config[[hid]]$distfun <- dist
+        if (!is.function(config_info$map_config[[hid]]$distfun)) {
+          if (config_info$map_config[[hid]]$distfun == "sih") {
+            config_info$map_config[[hid]]$distfun <- function(x) as.dist((1-cor(t(x)))/2)
+          } else {
+            config_info$map_config[[hid]]$distfun <- dist
+          }
         }
       }
       if (!"hclustfun" %in% names(config_info$map_config[[hid]])) {
         hparam <- c(hparam, hclustfun = hclust)
       } else {
-        if (config_info$map_config[[hid]]$hclustfun == "sih") {
-          config_info$map_config[[hid]]$hclustfun <- function(x) hclust(x,method = 'ward.D2')
-        } else {
-          config_info$map_config[[hid]]$hclustfun <- hclust
+        if (!is.function(config_info$map_config[[hid]]$hclustfun)) {
+          if (config_info$map_config[[hid]]$hclustfun == "sih") {
+            config_info$map_config[[hid]]$hclustfun <- function(x) hclust(x,method = 'ward.D2')
+          } else {
+            config_info$map_config[[hid]]$hclustfun <- hclust
+          }
         }
       }
       config_info$map_config[[hid]] <- c(config_info$map_config[[hid]], hparam)
@@ -136,7 +140,7 @@ gvmapConfig <- function(config_file) {
   }
 
   if (!"map_order" %in% names(config_info$map_config)) {
-    map_order <- grep('^heatmap_[0-9]|^legmap_[0-9]', names(config_info$map_config))
+    map_order <- grep('^heatmap_[0-9]|^legend_[0-9]', names(config_info$map_config))
     map_order <- names(config_info$map_config)[map_order]
     config_info$map_config$map_order <- map_order
   }
