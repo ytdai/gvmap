@@ -222,6 +222,13 @@ config_file_3 <- system.file('extdata', 'config.leg.yaml', package = 'gvmap')
 config_file_1 <- read.config(config_file_1)
 config_file_2 <- read.config(config_file_2)
 config_file_3 <- read.config(config_file_3)
+
+# or you can also read config from YAML file
+config_file_1 <- gvmapConfig(config_file = config_file_1)
+config_file_2 <- gvmapConfig(config_file = config_file_2)
+config_file_3 <- gvmapConfig(config_file = config_file_3)
+
+# you can use str(config_file_1) to see the structure of config_file_1
 ```
 
 ## Paraneters from `gvmapAutoConfig`
@@ -242,12 +249,13 @@ legend_info
 config_file <- gvmapAutoConfig(heatmap_info = heatmap_info,
                                legend_info = legend_info)
 
+output_svg_name <- paste0(tempdir(), "/o5.svg")
 
 # run gvmap
 gvmap(legend_data = legend_data,
       heatmap_data = heatmap_data_mtp,
       config_file = config_file,
-      output_svg_name = paste0(tempdir(), "/o5.svg"),
+      output_svg_name = output_svg_name,
       plot_width = 800,
       plot_height = 1200)
 ```
@@ -260,7 +268,8 @@ You can modify gvmap parameters using `gvmapModAttr`
 
 ``` {r}
 # modify color of heatmap_1
-config_file <- gvmapModAttr(attr_name = "color_theme", value = "gradient_col_op", target = "heatmap_1", config_file = config_file)
+config_file <- gvmapModAttr(attr_name = "color_theme", value = "gradient_col_op", 
+                            target = "heatmap_1", config_file = config_file)
 
 # add split sample name 
 config_file <- gvmapModAttr(attr_name = "split_sample", value = c("M1001", "M4001"),
@@ -275,12 +284,21 @@ config_file <- gvmapModAttr(attr_name = "gradient_col_ryb", value = c("red", "ye
                             config_file = config_file)
 
 # modify color of heatmap_3
-config_file <- gvmapModAttr(attr_name = "color_theme", value = "gradient_col_ryb", target = "heatmap_3", config_file = config_file)
+config_file <- gvmapModAttr(attr_name = "color_theme", value = "gradient_col_ryb", 
+                            target = "heatmap_3", config_file = config_file)
 
+# modify distfun and hclustfun of heatmap_1
+config_file <- gvmapModAttr(attr_name = "distfun", value = function(x) as.dist((1-cor(t(x)))/2), 
+                            target = "heatmap_1", config_file = config_file)
+config_file <- gvmapModAttr(attr_name = "hclustfun", value = function(x) hclust(x,method = 'ward.D'), 
+                            target = "heatmap_1", config_file = config_file)
+
+output_svg_name <- paste0(tempdir(), "/o6.svg")
+  
 gvmap(legend_data = legend_data,
       heatmap_data = heatmap_data_mtp,
       config_file = config_file,
-      output_svg_name = paste0(tempdir(), "/o6.svg"),
+      output_svg_name = output_svg_name,
       plot_width = 800,
       plot_height = 1200,
       sample_span = 5)

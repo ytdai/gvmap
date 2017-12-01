@@ -127,11 +127,12 @@ str(config_file_content)
 
 # run by default paramter
 config_file <- system.file("extdata", "config.mtp.yaml", package = "gvmap")
+output_svg_name <- paste0(tempdir(), "/o1.svg")
 
 gvmap(legend_data = legend_data,
       heatmap_data = heatmap_data_mtp,
       config_file = config_file,
-      output_svg_name = paste0(tempdir(), "/o1.svg"),
+      output_svg_name = output_svg_name,
       plot_width = 800,
       plot_height = 1200)
 ```
@@ -141,11 +142,12 @@ gvmap(legend_data = legend_data,
 ``` {r}
 # run by default paramter
 config_file <- system.file("extdata", "config.sig.yaml", package = "gvmap")
+output_svg_name <- paste0(tempdir(), "/o2.svg")
 
 gvmap(legend_data = legend_data,
       heatmap_data = heatmap_data_sig,
       config_file = config_file,
-      output_svg_name = paste0(tempdir(), "/o2.svg"),
+      output_svg_name = output_svg_name,
       plot_width = 800,
       plot_height = 1200)
 ```
@@ -155,10 +157,11 @@ gvmap(legend_data = legend_data,
 ``` {r}
 # only legend data
 config_file <- system.file("extdata", "config.leg.yaml", package = "gvmap")
+output_svg_name <- paste0(tempdir(), "/o3.svg")
 
 gvmap(legend_data = legend_data,
       config_file = config_file,
-      output_svg_name = paste0(tempdir(), "/o3.svg"),
+      output_svg_name = output_svg_name,
       plot_width = 800,
       plot_height = 1200)
 ```
@@ -167,11 +170,12 @@ gvmap(legend_data = legend_data,
 ``` {r}
 # add sample span and heatmap span
 config_file <- system.file("extdata/config.mtp.yaml", package = "gvmap")
+output_svg_name <- paste0(tempdir(), "/o4.svg")
 
 gvmap(legend_data = legend_data,
       heatmap_data = heatmap_data_mtp,
       config_file = config_file,
-      output_svg_name = paste0(tempdir(), "/o4.svg"),
+      output_svg_name = output_svg_name,
       sample_span = 5,
       heatmap_row_span = 4,
       plot_width = 800,

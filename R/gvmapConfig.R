@@ -1,14 +1,16 @@
-#
-# Read config file of gvmap
-#
-# This function is used to check basic parameter in config file.
-# If a basic paramter in map_config is missing, the program will stop.
-# If a basic paramter in color_config is missing, it will use default color theme.
-# @param config_file the config file you input
-# @examples
-# config_file <- "inst/extdata/config.yaml"
-# gvmap_config <- gvmapConfig(config_file)
-#
+#'
+#' Read config file of gvmap
+#'
+#' This function is used to check basic parameter in config file.
+#' If a basic paramter in map_config is missing, the program will stop. eg. map_config, heatmap_num, legend_num
+#' If a basic paramter in color_config is missing, it will use default color theme.
+#' @param config_file character or list, the config file you input
+#'
+#' @export
+#' @examples
+#' config_file <- system.file('extdata', 'config.sig.yaml', package = 'gvmap')
+#' gvmap_config <- gvmapConfig(config_file)
+#'
 gvmapConfig <- function(config_file) {
   default_color_theme <- list(
     bg_col = "#EEEEEE",

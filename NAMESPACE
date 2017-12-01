@@ -2,6 +2,7 @@
 
 export(gvmap)
 export(gvmapAutoConfig)
+export(gvmapConfig)
 export(gvmapModAttr)
 import(configr)
 import(dendextend)
