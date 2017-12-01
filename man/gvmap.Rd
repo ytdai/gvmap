@@ -95,10 +95,16 @@ as the Rowv argument above and additionally when x is a square matrix, Colv = "R
 that columns should be treated identically to the rows. SEE \link[gplots]{heatmap.2}
 
 [param] distfun character, function used to compute the distance (dissimilarity) between both rows
-and columns. Defaults to dist. SEE \link[gplots]{heatmap.2}
+and columns. Defaults to dist.  Also, there are other several parameters in distfun, such as "euclidean",
+ "maximum", "manhattan", "canberra", "binary" or "minkowski". You can also have a
+user-defined function by inputing a function parameter through \link[gvmap]{gvmapModAttr}.
+SEE \link[gplots]{heatmap.2}
 
 [param] hclustfun character, function used to compute the hierarchical clustering when Rowv or
-Colv are not dendrograms. Defaults to hclust. SEE \link[gplots]{heatmap.2}
+Colv are not dendrograms. Defaults to hclust. Also, there are other several parameters in hclustfun,
+such as ward.D, ward.D2, single, complete, average, mcquitty, median, centroid. You can also have a
+user-defined function by inputing a function parameter through \link[gvmap]{gvmapModAttr}.
+ SEE \link[gplots]{heatmap.2}
 
 ======= LEGEND ========
 

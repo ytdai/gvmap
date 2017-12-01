@@ -1,5 +1,5 @@
 ---
-title: "gvmap config"
+title: "gvmap Config"
 author: "Dai Yuting"
 date: "`r Sys.Date()`"
 vignette: >
@@ -140,11 +140,17 @@ then dendrogram is computed and reordered based on the order of the vector.
 as the Rowv argument above and additionally when x is a square matrix, Colv = "Rowv" means
 that columns should be treated identically to the rows. 
 
-[param] `distfun`  character, function used to compute the distance (dissimilarity) between both rows
-and columns. Defaults to dist. 
+[param] `distfun` character, function used to compute the distance (dissimilarity) between both rows
+and columns. Defaults to dist.  Also, there are other several parameters in distfun, such as "euclidean", 
+"maximum", "manhattan", "canberra", "binary" or "minkowski". You can also have a
+user-defined function by inputing a function parameter through `gvmapModAttr()`.
 
-[param] `hclustfun`  character, function used to compute the hierarchical clustering when Rowv or
-Colv are not dendrograms. Defaults to hclust. SEE \link[gplots]{heatmap.2}
+[param] `hclustfun` character, function used to compute the hierarchical clustering when Rowv or
+Colv are not dendrograms. Defaults to hclust. Also, there are other several parameters in hclustfun,
+such as ward.D, ward.D2, single, complete, average, mcquitty, median, centroid. You can also have a
+user-defined function by inputing a function parameter through `gvmapModAttr()`.
+
+
 
 **======= LEGEND ========**
 
@@ -306,3 +312,6 @@ gvmap(legend_data = legend_data,
 
 ![](o6.svg)
 
+``` {r}
+sessionInfo()
+```

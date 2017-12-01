@@ -1,5 +1,5 @@
 ---
-title: "gvmap tutorial"
+title: "gvmap Tutorial"
 author: "Dai Yuting"
 date: "`r Sys.Date()`"
 vignette: >
@@ -184,3 +184,9 @@ gvmap(legend_data = legend_data,
 
 
 ![](o4.svg)
+
+``` {r}
+sessionInfo()
+```
+
+

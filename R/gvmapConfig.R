@@ -114,6 +114,18 @@ gvmapConfig <- function(config_file) {
         if (!is.function(config_info$map_config[[hid]]$distfun)) {
           if (config_info$map_config[[hid]]$distfun == "sih") {
             config_info$map_config[[hid]]$distfun <- function(x) as.dist((1-cor(t(x)))/2)
+          } else if (config_info$map_config[[hid]]$distfun == "euclidean") {
+            config_info$map_config[[hid]]$distfun <- function(x) dist(x, method = "euclidean")
+          } else if (config_info$map_config[[hid]]$distfun == "maximum") {
+            config_info$map_config[[hid]]$distfun <- function(x) dist(x, method = "maximum")
+          } else if (config_info$map_config[[hid]]$distfun == "manhattan") {
+            config_info$map_config[[hid]]$distfun <- function(x) dist(x, method = "manhattan")
+          } else if (config_info$map_config[[hid]]$distfun == "canberra") {
+            config_info$map_config[[hid]]$distfun <- function(x) dist(x, method = "canberra")
+          } else if (config_info$map_config[[hid]]$distfun == "binary") {
+            config_info$map_config[[hid]]$distfun <- function(x) dist(x, method = "binary")
+          } else if (config_info$map_config[[hid]]$distfun == "minkowski") {
+            config_info$map_config[[hid]]$distfun <- function(x) dist(x, method = "minkowski")
           } else {
             config_info$map_config[[hid]]$distfun <- dist
           }
@@ -124,7 +136,23 @@ gvmapConfig <- function(config_file) {
       } else {
         if (!is.function(config_info$map_config[[hid]]$hclustfun)) {
           if (config_info$map_config[[hid]]$hclustfun == "sih") {
-            config_info$map_config[[hid]]$hclustfun <- function(x) hclust(x,method = 'ward.D2')
+            config_info$map_config[[hid]]$hclustfun <- function(x) hclust(x, method = 'ward.D')
+          } else if (config_info$map_config[[hid]]$hclustfun == "ward.D") {
+            config_info$map_config[[hid]]$hclustfun <- function(x) hclust(x, method = 'ward.D')
+          } else if (config_info$map_config[[hid]]$hclustfun == "ward.D2") {
+            config_info$map_config[[hid]]$hclustfun <- function(x) hclust(x, method = 'ward.D2')
+          } else if (config_info$map_config[[hid]]$hclustfun == "single") {
+            config_info$map_config[[hid]]$hclustfun <- function(x) hclust(x, method = 'single')
+          } else if (config_info$map_config[[hid]]$hclustfun == "complete") {
+            config_info$map_config[[hid]]$hclustfun <- function(x) hclust(x, method = 'complete')
+          } else if (config_info$map_config[[hid]]$hclustfun == "average") {
+            config_info$map_config[[hid]]$hclustfun <- function(x) hclust(x, method = 'average')
+          } else if (config_info$map_config[[hid]]$hclustfun == "mcquitty") {
+            config_info$map_config[[hid]]$hclustfun <- function(x) hclust(x, method = 'mcquitty')
+          } else if (config_info$map_config[[hid]]$hclustfun == "median") {
+            config_info$map_config[[hid]]$hclustfun <- function(x) hclust(x, method = 'median')
+          } else if (config_info$map_config[[hid]]$hclustfun == "centroid") {
+            config_info$map_config[[hid]]$hclustfun <- function(x) hclust(x, method = 'centroid')
           } else {
             config_info$map_config[[hid]]$hclustfun <- hclust
           }

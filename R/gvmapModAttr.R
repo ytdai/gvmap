@@ -19,59 +19,106 @@
 #'                                legend_info = legend_info)
 #'
 #' # modify heatmap_num
-#' config_file <- gvmapModAttr(attr_name = "heatmap_num", value = 2, config_file = config_file)
+#' config_file <- gvmapModAttr(attr_name = "heatmap_num",
+#'                             value = 2,
+#'                             config_file = config_file)
 #' config_file$map_config$heatmap_num
 #'
 #' # modify legend_num
-#' config_file <- gvmapModAttr(attr_name = "legend_num", value = 3, config_file = config_file)
+#' config_file <- gvmapModAttr(attr_name = "legend_num",
+#'                             value = 3,
+#'                             config_file = config_file)
 #' config_file$map_config$legend_num
 #'
 #' # modify raw_data of heatmap_1
-#' config_file <- gvmapModAttr(attr_name = "raw_data", value = FALSE, target = "heatmap_1", config_file = config_file)
+#' config_file <- gvmapModAttr(attr_name = "raw_data",
+#'                             value = FALSE, target = "heatmap_1",
+#'                             config_file = config_file)
 #'
 #' # modify kmer_col of heatmap_1
-#' config_file <- gvmapModAttr(attr_name = "kmer_col", value = 3, target = "heatmap_1", config_file = config_file)
+#' config_file <- gvmapModAttr(attr_name = "kmer_col",
+#'                             value = 3,
+#'                             target = "heatmap_1",
+#'                             config_file = config_file)
 #'
 #' # modify kmer_row of heatmap_2
-#' config_file <- gvmapModAttr(attr_name = "kmer_row", value = 4, target = "heatmap_2", config_file = config_file)
+#' config_file <- gvmapModAttr(attr_name = "kmer_row",
+#'                             value = 4,
+#'                             target = "heatmap_2",
+#'                             config_file = config_file)
 #'
 #' # modify split_row_name of heatmap_2
-#' config_file <- gvmapModAttr(attr_name = "split_row_name", value = c("M1001", "M4001"),
-#'                             target = "heatmap_2", config_file = config_file)
+#' config_file <- gvmapModAttr(attr_name = "split_row_name",
+#'                             value = c("M1001", "M4001"),
+#'                             target = "heatmap_2",
+#'                             config_file = config_file)
 #'
 #' # modify kmer_col_color of heatmap_1
-#' config_file <- gvmapModAttr(attr_name = "kmer_col_color", value = "pool_col", target = "heatmap_1", config_file = config_file)
+#' config_file <- gvmapModAttr(attr_name = "kmer_col_color",
+#'                             value = "pool_col",
+#'                             target = "heatmap_1",
+#'                             config_file = config_file)
 #'
 #' # modify kmer_row_color of heatmap_1
-#' config_file <- gvmapModAttr(attr_name = "kmer_row_color", value = "tag_col", target = "heatmap_1", config_file = config_file)
+#' config_file <- gvmapModAttr(attr_name = "kmer_row_color",
+#'                             value = "tag_col",
+#'                             target = "heatmap_1",
+#'                             config_file = config_file)
 #'
 #' # modify dendrogram of heatmap_1
-#' config_file <- gvmapModAttr(attr_name = "dendrogram", value = "col", target = "heatmap_1", config_file = config_file)
+#' config_file <- gvmapModAttr(attr_name = "dendrogram",
+#'                             value = "col",
+#'                             target = "heatmap_1",
+#'                             config_file = config_file)
 #'
 #' # modify Rowv of heatmap_1
-#' config_file <- gvmapModAttr(attr_name = "Rowv", value = FALSE, target = "heatmap_1", config_file = config_file)
+#' config_file <- gvmapModAttr(attr_name = "Rowv",
+#'                             value = FALSE,
+#'                             target = "heatmap_1",
+#'                             config_file = config_file)
 #'
 #' # modify Colv of heatmap_1
-#' config_file <- gvmapModAttr(attr_name = "Colv", value = FALSE, target = "heatmap_1", config_file = config_file)
+#' config_file <- gvmapModAttr(attr_name = "Colv",
+#'                             value = FALSE,
+#'                             target = "heatmap_1",
+#'                             config_file = config_file)
 #'
 #' # modify color_theme of heatmap_1
-#' config_file <- gvmapModAttr(attr_name = "color_theme", value = "gradient_col_gr_oo", target = "heatmap_1", config_file = config_file)
+#' config_file <- gvmapModAttr(attr_name = "color_theme",
+#'                             value = "gradient_col_gr_oo",
+#'                             target = "heatmap_1",
+#'                             config_file = config_file)
 #'
 #' # modify distfun of heatmap_1
-#' config_file <- gvmapModAttr(attr_name = "distfun", value = dist, target = "heatmap_1", config_file = config_file)
+#' config_file <- gvmapModAttr(attr_name = "distfun",
+#'                             value = dist,
+#'                             target = "heatmap_1",
+#'                             config_file = config_file)
 #'
 #' # modify distfun of heatmap_1
-#' config_file <- gvmapModAttr(attr_name = "hclustfun", value = function(x) hclust(x,method = 'ward.D2'), target = "heatmap_1", config_file = config_file)
+#' config_file <- gvmapModAttr(attr_name = "hclustfun",
+#'                             value = function(x) hclust(x,method = 'ward.D2'),
+#'                             target = "heatmap_1",
+#'                             config_file = config_file)
 #'
 #' # modify legend_1
 #' # NOTE: legend only have one attr_name
-#' leg_value <- data.frame(name = c("age", "gender"), color = "binary_col", column = c(2,3))
-#' config_file <- gvmapModAttr(attr_name = "legend", value = leg_value, target = "legend_1", config_file = config_file)
+#' leg_value <- data.frame(name = c("age", "gender"),
+#'                         color = "binary_col",
+#'                         column = c(2,3))
+#' config_file <- gvmapModAttr(attr_name = "legend",
+#'                             value = leg_value,
+#'                             target = "legend_1",
+#'                             config_file = config_file)
 #'
 #' # modify color
-#' config_file <- gvmapModAttr(attr_name = "tag_col", value = "#000000", config_file = config_file)
+#' config_file <- gvmapModAttr(attr_name = "tag_col",
+#'                             value = "#000000",
+#'                             config_file = config_file)
 #'
-#' config_file <- gvmapModAttr(attr_name = "tag_col_1", value = "#FF00000", config_file = config_file)
+#' config_file <- gvmapModAttr(attr_name = "tag_col_1",
+#'                             value = "#FF00000",
+#'                             config_file = config_file)
 #'
 #'
 gvmapModAttr <- function( attr_name, value, target, config_file ) {
@@ -283,8 +330,8 @@ gvmapModAttr <- function( attr_name, value, target, config_file ) {
       stop("[ERROR] target is required, eg. heatmap_1")
     } else {
       idx <- which(names(config_file$map_config) == target)
-      if (!is.function(value)) {
-        stop("[ERROR] value of distfun must be a function")
+      if (!is.function(value) & !is.character(value)) {
+        stop("[ERROR] value of distfun must be a function or a character")
       } else {
         config_file$map_config[[idx]]$distfun <- value
       }
@@ -296,8 +343,8 @@ gvmapModAttr <- function( attr_name, value, target, config_file ) {
       stop("[ERROR] target is required, eg. heatmap_1")
     } else {
       idx <- which(names(config_file$map_config) == target)
-      if (!is.function(value)) {
-        stop("[ERROR] value of hclustfun must be a function")
+      if (!is.function(value) & !is.character(value)) {
+        stop("[ERROR] value of hclustfun must be a function or a character")
       } else {
         config_file$map_config[[idx]]$hclustfun <- value
       }
