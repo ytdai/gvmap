@@ -243,11 +243,12 @@ You can also generating gvmap config parameters using `gvmapAutoConfig`.
 
 ``` {r}
 heatmap_info <- list("heatmap_1", "heatmap_2", "heatmap_3")
-legend_info <- data.frame(legend_group = c(rep("legend_1", 4), rep("legend_2", 3)),
-                          name = colnames(legend_data)[2:8],
+legend_info <- data.frame(legend_group = c(rep("legend_1", 4), rep("legend_2", 3), rep("legend_3", 2)),
+                          name = colnames(legend_data)[2:10],
                           col_theme = c("binary_col", "binary_col", "tag_col", "pool_col",
-                                        "mutation_col", "mutation_col", "mutation_col"),
-                          column_num = 2:8)
+                                        "mutation_col", "mutation_col", "mutation_col",
+                                        "gradient_col_op", "gradient_col_br"),
+                          column_num = 2:10)
 
 heatmap_info
 legend_info
@@ -282,7 +283,9 @@ config_file <- gvmapModAttr(attr_name = "split_sample", value = c("M1001", "M400
                             config_file = config_file)
 
 # modify map_order
-config_file <- gvmapModAttr(attr_name = "map_order", value = c("legend_1", "heatmap_1", "legend_2", "heatmap_2", "heatmap_3"),
+config_file <- gvmapModAttr(attr_name = "map_order", 
+                            value = c("legend_1", "heatmap_1", "legend_2", 
+                                      "heatmap_2", "legend_3", "heatmap_3"),
                             config_file = config_file)
 
 # add new gradient color

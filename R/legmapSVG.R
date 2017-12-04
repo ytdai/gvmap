@@ -288,6 +288,31 @@ getLegRowRectSVG <- function(type, color_theme, col_num, legend_data, legend_sub
                   stroke.width = plot_config$stroke_width)
       }
     })
+  } else if (grepl("^gradient_", color_theme)) {
+    color_this <- config_data$color_config[[match(color_theme, names(config_data$color_config))]]
+    content_element <- sort(unique(as.vector(content)))
+    content_element <- content_element[!is.na(content_element)]
+    color_this <- colorRampPalette(color_this)(length(content_element))
+    rect <- lapply(1:length(content), function(x) {
+      if (is.na(content[x])) {
+        rect.svg( x = (x-1)*legend_sub_plot$rect_w + col_gap[x],
+                  y = baseline*legend_sub_plot$rect_h,
+                  width = legend_sub_plot$rect_w,
+                  height = legend_sub_plot$rect_h,
+                  fill = config_data$color_config$bg_col,
+                  stroke = config_data$color_config$white_col,
+                  stroke.width = plot_config$stroke_width)
+      } else {
+        tt <- which(content_element == content[x])
+        rect.svg( x = (x-1)*legend_sub_plot$rect_w + col_gap[x],
+                  y = baseline*legend_sub_plot$rect_h,
+                  width = legend_sub_plot$rect_w,
+                  height = legend_sub_plot$rect_h,
+                  fill = color_this[tt],
+                  stroke = config_data$color_config$white_col,
+                  stroke.width = plot_config$stroke_width)
+      }
+    })
   } else {
     rect <- lapply(1:length(content), function(x) {
       if (content[x] == 0 | is.na(content[x])) {
@@ -451,6 +476,24 @@ getRowLegendText <- function(type, color_theme, col_num, legend_data, legend_sub
       basic_info <- ""
     }
 
+  } else if (grepl("^gradient_", color_theme)) {
+    color_this <- config_data$color_config[[match(color_theme, names(config_data$color_config))]]
+    content_element <- sort(unique(as.vector(content)))
+    content_element <- content_element[!is.na(content_element)]
+    color_this <- colorRampPalette(color_this)(length(content_element))
+
+    if (length(content_element) > 0) {
+      basic_info <- lapply(1:length(content_element), function(x) {
+        paste(rect.svg(x = 0 + title_app + (x-1)*legend_control,
+                       y = baseline * legend_control_r,
+                       width = legend_control, height = legend_control,
+                       fill = color_this[x], stroke.width = 0),
+              sep = "\n")
+      })
+      basic_info <- paste(unlist(basic_info), collapse = "\n")
+    } else {
+      basic_info <- ""
+    }
   } else {
     color_this <- config_data$color_config[[match(color_theme, names(config_data$color_config))]]
     content_element <- sort(unique(as.vector(content)))

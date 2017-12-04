@@ -1,6 +1,6 @@
 map_config:
   heatmap_num: 3
-  legend_num: 2
+  legend_num: 3
   heatmap_1:
     raw_data: FALSE
     kmer_col: 1
@@ -20,7 +20,8 @@ map_config:
     split_row_name: NULL
     percentage: 0.1
     dendrogram: "both"
-    Rowv: TRUE
+    Colv: TRUE
+    Rowv: FALSE
     color_theme: "gradient_col_op"
     distfun: "dist"
     hclustfun: "hclust" 
@@ -35,12 +36,16 @@ map_config:
     - ["KRAS", "mutation_col", 6]
     - ["P53", "mutation_col", 7]
     - ["NRAS", "mutation_col", 8]
+  legend_3:
+    - ["Gene_1_exp", "gradient_col_op", 9]
+    - ["Gene_2_exp", "gradient_col_br", 10]
   map_order:
     - "heatmap_1"
     - "legend_1"
     - "heatmap_2"
     - "heatmap_3"
     - "legend_2"
+    - "legend_3"
   split_sample: 
     - "M1003"
     - "M4002"
@@ -64,6 +69,7 @@ color_config:
   gradient_col_gr: ["green", "black", "red"]
   gradient_col_yp: ["yellow", "black", "purple"]
   gradient_col_op: ["orange", "white", "purple"]
+  gradient_col_br: ["blue", "red"]
   gv_line_col: "#FDBF6F"
   gv_bar_col: "#E6AB02"
   gv_dot_col: "#000000"

@@ -375,7 +375,7 @@ gvmap <- function(legend_data,
       iii <- 0
       gtag <- rep("g0", length(group_sub_row[, 1]))
       for (ii in 1:length(group_sub_row[, 1])) {
-        if (group_sub_row$gap[ii]) {
+        if (isTRUE(group_sub_row$gap[ii])) {
           iii <- iii + 1
           gtag[ii] <- paste0("g", iii)
         } else {

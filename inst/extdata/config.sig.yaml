@@ -1,6 +1,6 @@
 map_config:
   heatmap_num: 1
-  legend_num: 2
+  legend_num: 3
   heatmap_1:
     raw_data: FALSE
     kmer_col: 3
@@ -24,10 +24,14 @@ map_config:
     - ["KRAS", "mutation_col", 6]
     - ["P53", "mutation_col", 7]
     - ["NRAS", "mutation_col", 8]
+  legend_3:
+    - ["Gene_1_exp", "gradient_col_op", 9]
+    - ["Gene_2_exp", "gradient_col_br", 10]
   map_order:
     - "legend_1"
     - "heatmap_1"
     - "legend_2"
+    - "legend_3"
   split_sample: 
     - "M1003"
     - "M4002"

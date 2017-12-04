@@ -57,9 +57,13 @@ install.packages("gvmap_0.1.2.tar.gz")
 ## Required packages
 
 ``` {r}
+library(openxlsx)
+library(dendextend)
+library(matrixStats)
 library(easySVG)
 library(configr)
 library(gvmap)
+library(rsvg)
 ```
 
 ## Prepare heatmap data
