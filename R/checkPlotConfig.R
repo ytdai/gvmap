@@ -90,6 +90,7 @@ getLegendParam <- function(legend_data, config_data, plot_config) {
     kmer_col <- config_data$map_config[[hid[1]]]$kmer_col
   } else {
     heatmap_pre_sum = 0
+    kmer_col = 1
   }
 
 
