@@ -574,7 +574,7 @@ gvmap <- function(legend_data,
            width = plot_config$plot_width, height = plot_config$plot_out_height)
   output_svg_name <- normalizePath(output_svg_name)
 
-  if (output_group_info) {
+  if (output_group_info & length(group_info) > 0) {
     output_group_info_name <- gsub(".svg$", ".group.info.xlsx", output_svg_name)
     write.xlsx(group_info, output_group_info_name, colWidths = c(NA, "auto", "auto"))
   }
