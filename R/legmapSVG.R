@@ -1,12 +1,20 @@
 #
 # Conver legend sample information into svg elements
 #
-sampleSVG <- function(plot_config, gap_info, id) {
-  col_label <- which(!is.na(gap_info$node_label))
-  col_gap <- gap_info$node_kmer_gap[col_label] + gap_info$node_name_gap[col_label]
+sampleSVG <- function(plot_config, config_data, gap_info, id) {
 
-  if (length(col_gap) == 0) {
-    col_gap <- rep(0, length(plot_config$sample_order))
+  if (!is.null(gap_info)) {
+    if (length(gap_info$node_label) == 1) {
+      col_label <- plot_config$sample_order
+      col_gap <- config_data$map_config$legend_kmer_gap
+    } else {
+      col_label <- which(!is.na(gap_info$node_label))
+      col_gap <- gap_info$node_kmer_gap[col_label] + gap_info$node_name_gap[col_label]
+    }
+
+  } else {
+    col_label <- plot_config$sample_order
+    col_gap <- config_data$map_config$legend_kmer_gap
   }
 
   sample_name <- plot_config$sample_order
@@ -35,11 +43,18 @@ legendGroupSVG <- function(config_data, plot_config, legend_data, legend_sub_inf
   group_color_theme <- unlist(lapply(1:length(group_info), function(x) group_info[[x]][[2]]))
   group_col_num <- unlist(lapply(1:length(group_info), function(x) group_info[[x]][[3]]))
 
-  col_label <- which(!is.na(gap_info$node_label))
-  col_gap <- gap_info$node_kmer_gap[col_label] + gap_info$node_name_gap[col_label]
+  if (!is.null(gap_info)) {
+    if (length(gap_info$node_label) == 1) {
+      col_label <- plot_config$sample_order
+      col_gap <- config_data$map_config$legend_kmer_gap
+    } else {
+      col_label <- which(!is.na(gap_info$node_label))
+      col_gap <- gap_info$node_kmer_gap[col_label] + gap_info$node_name_gap[col_label]
+    }
 
-  if (length(col_gap) == 0) {
-    col_gap <- rep(0, length(plot_config$sample_order))
+  } else {
+    col_label <- plot_config$sample_order
+    col_gap <- config_data$map_config$legend_kmer_gap
   }
 
   # rect information

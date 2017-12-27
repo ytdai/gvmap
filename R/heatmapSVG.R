@@ -93,7 +93,7 @@ heatmapSVG <- function(heatmap_sub_data, heatmap_sub_info, heatmap_sub_plot,
   col_gap <- gap_info$node_kmer_gap[col_label] + gap_info$node_name_gap[col_label]
 
   if (length(col_gap) == 0) {
-    col_gap <- rep(0, nc)
+    col_gap <- config_data$map_config$legend_kmer_gap
   }
   if (length(row_gap) == 0) {
     row_gap <- rep(0, nr)

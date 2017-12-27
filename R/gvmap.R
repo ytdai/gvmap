@@ -393,6 +393,18 @@ gvmap <- function(legend_data,
     config_data$map_config$heatmap_kmer_gap = NULL
   }
 
+  if (is.null(config_data$map_config$heatmap_kmer_gap) | length(config_data$map_config$heatmap_kmer_gap$node_x) <= 1) {
+      gap = rep(0, length(plot_config$sample_order))
+      for (i in 2:(length(plot_config$sample_order))) {
+        if (plot_config$sample_order[i] %in% config_data$map_config$split_sample) {
+          gap[i] = gap[i-1] + plot_config$sample_span
+        } else {
+          gap[i] = gap[i-1] + 0
+        }
+      }
+      config_data$map_config$legend_kmer_gap = gap
+  }
+
   ## =======================
   ## Generating SVG element
   ## =======================
@@ -439,6 +451,7 @@ gvmap <- function(legend_data,
       legend_sub_info <- config_data$map_config[[which(names(config_data$map_config) == legend_sub_name)]]
       legend_sub_plot <- plot_config[[which(names(plot_config) == "legend")]]
 
+
       legend_group_svg <- legendGroupSVG(config_data = config_data,
                                          plot_config = plot_config,
                                          legend_data = legend_data,
@@ -453,9 +466,16 @@ gvmap <- function(legend_data,
 
   # add sample information
   if (!is.null(config_data$map_config$heatmap_kmer_gap)) {
-    group_sub_col <- data.frame(col_name = config_data$map_config$heatmap_kmer_gap$node_label,
-                                gap = config_data$map_config$heatmap_kmer_gap$node_group,
-                                tag = "g0")
+    if (length(config_data$map_config$heatmap_kmer_gap$node_label) > 1) {
+      group_sub_col <- data.frame(col_name = config_data$map_config$heatmap_kmer_gap$node_label,
+                                  gap = config_data$map_config$heatmap_kmer_gap$node_group,
+                                  tag = "g0")
+    } else {
+      group_sub_col <- data.frame(col_name = plot_config$sample_order,
+                                  gap = FALSE,
+                                  tag = "g0")
+    }
+
     iii <- 0
     gtag <- rep("g0", length(group_sub_col[, 1]))
     for (ii in 1:length(group_sub_col[, 1])) {
@@ -475,6 +495,7 @@ gvmap <- function(legend_data,
 
   # add sample svg
   sample_svg <- sampleSVG(plot_config = plot_config,
+                          config_data = config_data,
                           gap_info = config_data$map_config$heatmap_kmer_gap,
                           id = "sample_list")
   def_content <- paste(def_content, sample_svg, sep = "\n")
@@ -513,7 +534,7 @@ gvmap <- function(legend_data,
                              y = plot_config$group_baseline[i])
       grad_use <- use.svg(id = paste0(order_name, "_grad"),
                              x = 0,
-                             y = plot_config$group_baseline[i] - heatmap_sub_plot$rect_h*5)
+                             y = abs(plot_config$group_baseline[i] - heatmap_sub_plot$rect_h*5))
       use_content <- paste(use_content, exp_mat_use, grad_use, sep = "\n")
     }
     if (grepl("^legend_", order_name)) {

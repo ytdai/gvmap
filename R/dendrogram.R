@@ -95,7 +95,7 @@ reorderfun <- function(d, w) reorder(d, w)
 # judge and add gap in heatmap dend
 #
 dendGap <- function(dend_attr, gap, w, h, name) {
-  if (!anyNA(dend_attr)) {
+  if (length(dend_attr$node_x) > 1) {
     aa <- rep(0, length(dend_attr$node_x))
     bb <- rep(0, length(dend_attr$node_x))
     k = 0

@@ -51,7 +51,7 @@ devtools::install_github("ytdai/gvmap")
 ### Source code
 
 ``` {r echo = TRUE, eval = FALSE}
-install.packages("gvmap_0.1.2.tar.gz")
+install.packages("gvmap_0.1.5.tar.gz")
 ```
 
 ## Required packages
