@@ -1,3 +1,4 @@
+# [![Build Status](https://travis-ci.org/ytdai/gvmap.svg)](https://travis-ci.org/ytdai/gvmap) [![CRAN](http://www.r-pkg.org/badges/version/gvmap)](https://cran.r-project.org/package=gvmap) [![Downloads](http://cranlogs.r-pkg.org/badges/gvmap?color=brightgreen)](http://www.r-pkg.org/pkg/gvmap)
 
 
 gvmap package
@@ -5,11 +6,11 @@ gvmap package
 
 An Improved Function to Plot Heatmap of Genomic Data
 
-# DESCRIPTION
+## DESCRIPTION
 
 Gvmap is an R package that can integrate multiple heatmap and legend figures. 
 
-# INSTALLATION
+## INSTALLATION
 
 Gvmap depends on several R packages. They are 
 [configr](https://cran.r-project.org/web/packages/configr/index.html), 
@@ -22,7 +23,7 @@ Gvmap depends on several R packages. They are
 You can install gvmap through github or source code.
 
 
-## Github
+### Github
 
 ``` r
 # Install the cutting edge development version from GitHub:
@@ -41,14 +42,14 @@ install.packages("stringr")
 devtools::install_github("ytdai/gvmap")
 ```
 
-## Zip/Tarball
+### Zip/Tarball
 
 1. Download the appropriate zip file or tar.gz file from Github
 2. Unzip the file and change directories into the gvmap directory
 3. Run `R CMD INSTALL pkg`
 
 
-# Plot
+## Plot
 
 Run by default paramter
 
@@ -66,7 +67,7 @@ Add sample span and heatmap span
 
 ![example.4.svg](https://github.com/ytdai/gvmap/tree/master/vignettes/o4.svg)
 
-# End
+## End
 
 
 
