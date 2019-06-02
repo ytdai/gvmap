@@ -582,7 +582,7 @@ gvmap <- function(legend_data,
   # convert
   if (convert_pdf) {
     if (file.size(output_svg_name) > 10000000) {
-      cmd = sprintf("inkscape --without-gui --export-pdf=\"%s\" %s", gsub(".svg$", ".pdf", output_svg_name), output_svg_name)
+      cmd = sprintf("inkscape --without-gui --export-pdf=\"%s\" %s &", gsub(".svg$", ".pdf", output_svg_name), output_svg_name)
       system(cmd)
     } else {
       rsvg_pdf(svg = output_svg_name, file = gsub(".svg$", ".pdf", output_svg_name))
